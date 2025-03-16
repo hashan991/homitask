@@ -122,7 +122,7 @@ const Home = () => {
                 </ListItemIcon>
                 <ListItemText
                   primary="Our Office Address"
-                  secondary="PRI Rubber Manufacturing (Pvt) Ltd. 123, Industrial Zone, Colombo 05,Colombo,,00500,Sri Lanka"
+                  secondary="PRI  (Pvt) Ltd. 123, Industrial Zone, Colombo 05,Colombo,,00500,Sri Lanka"
                 />
               </ListItem>
               {/* Email */}
@@ -187,15 +187,20 @@ const Home = () => {
               ABOUT US
             </Typography>
             <Typography variant="body1" color="textSecondary">
-              At P.R.I RUBBER, we specialize in creating durable, high-quality
-              rubber carpets designed for both commercial and residential use.{" "}
+              HomiTask At HomiTask, we specialize in providing an intelligent
+              and efficient home task management solution designed to streamline
+              household organization.{" "}
             </Typography>
             <Typography variant="body1" color="textSecondary" mt={2}>
-              With a focus on innovation and sustainability, we are committed to
-              providing eco-friendly flooring solutions that enhance comfort,
-              safety, and style. Our dedicated team ensures that every product
-              meets the highest standards of performance and design, delivering
-              value and satisfaction to our customers.
+               Our platform simplifies wishlist tracking, shopping list
+              management, meal planning, and inventory monitoring, ensuring that
+              every task is handled effortlessly. With a focus on automation,
+              smart notifications, and AI-driven insights, we are committed to
+              enhancing productivity, reducing stress, and bringing convenience
+              to everyday home management. Our dedicated team ensures that every
+              feature is optimized for ease of use, performance, and
+              reliability, making HomiTask the perfect assistant for modern
+              households.
             </Typography>
           </Grid>
         </Grid>

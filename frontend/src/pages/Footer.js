@@ -70,7 +70,7 @@ const Footer = () => {
               CONTACT
             </Typography>
             <Typography variant="body2" color="textSecondary">
-            PRI Rubber Manufacturing (Pvt) Ltd. 123, Industrial Zone, 
+            PRI (Pvt) Ltd. 123, Industrial Zone, 
             Colombo 05,Colombo,,00500,
             Sri Lanka,
             </Typography>

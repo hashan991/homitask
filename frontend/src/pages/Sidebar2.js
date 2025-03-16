@@ -85,8 +85,8 @@ const Sidebar2 = () => {
       <List sx={{ flexGrow: 1 }}>
         {" "}
         {/* Set flexGrow to 1 to ensure it fills the remaining space */}
-        {(user?.email === "malidu@email.com" ||
-          user?.email === "first5@email.com") && (
+        {(user?.email === "thashini@email.com" ||
+          user?.email === "homitask@gmail.com") && (
           <StyledListItem button onClick={() => navigate("/DashRep")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <HomeIcon />
@@ -95,7 +95,7 @@ const Sidebar2 = () => {
           </StyledListItem>
         )}
         {(user?.email === "nishitha@email.com" ||
-          user?.email === "first5@email.com") && (
+          user?.email === "homitask@gmail.com") && (
           <StyledListItem button onClick={() => navigate("/Dashreportin")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <InventoryIcon />
@@ -105,7 +105,7 @@ const Sidebar2 = () => {
         )}
         {/* Conditionally render the "Production Handling" button only for specific user */}
         {(user?.email === "nishan@email.com" ||
-          user?.email === "first5@email.com") && (
+          user?.email === "homitask@gmail.com") && (
           <StyledListItem button onClick={() => navigate("/dashreport")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <LocalShippingIcon />
@@ -114,7 +114,7 @@ const Sidebar2 = () => {
           </StyledListItem>
         )}
         {(user?.email === "hashan@email.com" ||
-          user?.email === "first5@email.com") && (
+          user?.email === "homitask@gmail.com") && (
           <StyledListItem button onClick={() => navigate("/dashOrderreport")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <BuildIcon />
@@ -123,7 +123,7 @@ const Sidebar2 = () => {
           </StyledListItem>
         )}
         {(user?.email === "hashan@email.com" ||
-          user?.email === "first5@email.com") && (
+          user?.email === "homitask@gmail.com") && (
           <StyledListItem button onClick={() => navigate("/dashOrderForm")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <BuildIcon />
