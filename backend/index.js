@@ -38,7 +38,8 @@ app.use("/test", testRouter);
 
 
 //nishitha
-
+const inventoryRoutes = require("./routes/inventoryHandling/inventoryRoutes.js");
+app.use("/api/inventory", inventoryRoutes);
 
 //tashini
 
