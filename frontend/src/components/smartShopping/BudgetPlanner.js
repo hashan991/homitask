@@ -1,11 +1,23 @@
 import React, { useState } from "react";
+import {
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  TextField,
+  Button,
+  Grid,
+  Alert,
+  Divider,
+  Box,
+} from "@mui/material";
 import BudgetInput from "./BudgetInput";
 import MealCard from "./MealCard";
 
 const BudgetPlanner = () => {
   const [budget, setBudget] = useState(50);
   const [weeklyMealPlan, setWeeklyMealPlan] = useState([]);
-  const [snacks, setSnacks] = useState([]); // ✅ Added state for Snacks
+  const [snacks, setSnacks] = useState([]); // ✅ Snacks State
   const [totalCost, setTotalCost] = useState(0);
   const [remainingBudget, setRemainingBudget] = useState(0);
   const [error, setError] = useState("");
@@ -26,17 +38,17 @@ const BudgetPlanner = () => {
       }
 
       const data = await response.json();
-      console.log("🔹 API Response:", data); // ✅ Debugging
+      console.log("🔹 API Response:", data);
 
       if (!data.weeklyMealPlan) {
         throw new Error("Meal plan not found");
       }
 
       setWeeklyMealPlan(data.weeklyMealPlan);
-      setSnacks(data.snacks || []); // ✅ Ensure snacks are also set
+      setSnacks(data.snacks || []);
       setTotalCost(data.totalCost);
       setRemainingBudget(data.remainingBudget);
-      setError(""); // ✅ Clear previous errors
+      setError("");
     } catch (error) {
       console.error("❌ Error fetching meal plan:", error);
       setError("Error fetching meal plan. Please try again.");
@@ -46,14 +58,14 @@ const BudgetPlanner = () => {
   // ✅ Function to Set Budget & Fetch Meals
   const handleBudgetSubmit = async (newBudget) => {
     setBudget(newBudget);
-    setError(""); // ✅ Clear previous errors
+    setError("");
 
     try {
-      // ✅ Step 1: Update budget in backend
+      // ✅ Update budget in backend
       const budgetResponse = await fetch("http://localhost:8070/api/budget", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: newBudget }), // ✅ Ensure correct key name
+        body: JSON.stringify({ amount: newBudget }),
       });
 
       if (!budgetResponse.ok) {
@@ -61,8 +73,6 @@ const BudgetPlanner = () => {
       }
 
       console.log("✅ Budget updated successfully!");
-
-      // ✅ Step 2: Fetch updated meal plan from backend
       await fetchMealsByBudget();
     } catch (error) {
       console.error("❌ Error setting budget:", error);
@@ -71,73 +81,86 @@ const BudgetPlanner = () => {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
-      <h1
-        style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px" }}
+    <Container maxWidth="md" sx={{ py: 4 }}>
+      <Typography
+        variant="h4"
+        fontWeight="bold"
+        textAlign="center"
+        sx={{ mb: 3 }}
       >
         Budget Meal Planner
-      </h1>
+      </Typography>
 
-      <BudgetInput onBudgetSubmit={handleBudgetSubmit} />
+      <Box display="flex" justifyContent="center" mb={3}>
+        <BudgetInput onBudgetSubmit={handleBudgetSubmit} />
+      </Box>
 
-      {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
+      {error && <Alert severity="error">{error}</Alert>}
 
-      <h2 style={{ fontSize: "20px", fontWeight: "bold", marginTop: "16px" }}>
-        Suggested Meals
-      </h2>
-
-      {/* ✅ Display total cost & remaining budget */}
-      <div
-        style={{
-          marginTop: "10px",
-          padding: "10px",
-          background: "#f8f8f8",
-          borderRadius: "5px",
+      {/* ✅ Budget Summary */}
+      <Card
+        sx={{
+          backgroundColor: "#f5f5f5",
+          borderRadius: 2,
+          boxShadow: 2,
+          mb: 3,
         }}
       >
-        <p style={{ fontSize: "16px", fontWeight: "bold", color: "#333" }}>
-          Total Cost: ${totalCost}
-        </p>
-        <p style={{ fontSize: "16px", fontWeight: "bold", color: "#4CAF50" }}>
-          Remaining Budget: ${remainingBudget}
-        </p>
-      </div>
+        <CardContent>
+          <Typography variant="h6" fontWeight="bold">
+            Total Cost: ${totalCost}
+          </Typography>
+          <Typography variant="h6" fontWeight="bold" sx={{ color: "green" }}>
+            Remaining Budget: ${remainingBudget}
+          </Typography>
+        </CardContent>
+      </Card>
 
+      {/* ✅ Meals for Each Day */}
       {weeklyMealPlan.length === 0 ? (
-        <p style={{ fontSize: "14px", color: "gray" }}>
+        <Typography variant="body1" color="gray" textAlign="center">
           No meals available. Please enter a budget.
-        </p>
+        </Typography>
       ) : (
         weeklyMealPlan.map((dayPlan, index) => (
-          <div key={index} style={{ marginBottom: "20px" }}>
-            <h3 style={{ fontSize: "18px", fontWeight: "bold" }}>
+          <Box key={index} sx={{ mb: 4 }}>
+            <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
               {dayPlan.day}
-            </h3>
-            {dayPlan.meals.length > 0 ? (
-              dayPlan.meals.map((meal, mealIndex) => (
-                <MealCard key={mealIndex} meal={meal} />
-              ))
-            ) : (
-              <p style={{ fontSize: "14px", color: "gray" }}>
-                No meals for this day.
-              </p>
-            )}
-          </div>
+            </Typography>
+            <Grid container spacing={2}>
+              {dayPlan.meals.length > 0 ? (
+                dayPlan.meals.map((meal, mealIndex) => (
+                  <Grid item xs={12} sm={6} md={4} key={mealIndex}>
+                    <MealCard meal={meal} />
+                  </Grid>
+                ))
+              ) : (
+                <Typography variant="body2" color="gray">
+                  No meals for this day.
+                </Typography>
+              )}
+            </Grid>
+          </Box>
         ))
       )}
 
-      {/* ✅ Render Snacks */}
+      {/* ✅ Snacks Section */}
       {snacks.length > 0 && (
-        <div style={{ marginTop: "20px" }}>
-          <h2 style={{ fontSize: "20px", fontWeight: "bold" }}>Snacks</h2>
-          <div style={{ display: "grid", gap: "10px" }}>
+        <>
+          <Divider sx={{ my: 4 }} />
+          <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+            Snacks
+          </Typography>
+          <Grid container spacing={2}>
             {snacks.map((snack, index) => (
-              <MealCard key={index} meal={snack} />
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <MealCard meal={snack} />
+              </Grid>
             ))}
-          </div>
-        </div>
+          </Grid>
+        </>
       )}
-    </div>
+    </Container>
   );
 };
 
