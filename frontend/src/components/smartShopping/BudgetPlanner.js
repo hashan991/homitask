@@ -98,7 +98,16 @@ const BudgetPlanner = () => {
           variant="h4"
           fontWeight="bold"
           textAlign="center"
-          sx={{ mb: 3 }}
+          sx={{
+            mb: 3,
+            background: "linear-gradient(to right, #6a11cb, #2575fc)",
+            boxShadow: "0px 5px 15px rgba(106, 17, 203, 0.4)",
+            color: "#fff",
+            fontWeight: "bold",
+            "&:hover": {
+              background: "linear-gradient(to right, #2575fc, #6a11cb)",
+            },
+          }}
         >
           🍽️ Budget Meal Planner
         </Typography>
