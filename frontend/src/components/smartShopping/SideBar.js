@@ -116,7 +116,7 @@ const Sidebar = () => {
             >
               <ListAltIcon sx={{ color: "#FFFFFF" }} />
               <ListItemText
-                primary="Meal Plan"
+                primary="New Recipes"
                 sx={{ paddingLeft: "10px", color: "#FFFFFF" }}
               />
             </ListItem>

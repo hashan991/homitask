@@ -4,19 +4,23 @@ import {
   Box,
   Typography,
   Grid,
-  Card,
-  CardContent,
-  Button,
   CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import MealForm from "./MealForm";
 import MealCard from "./MealCard";
-import AddIcon from "@mui/icons-material/Add";
 
 const MealPlanner = () => {
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editMeal, setEditMeal] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   // 🔹 Fetch meals from the database when the page loads
   useEffect(() => {
@@ -47,6 +51,44 @@ const MealPlanner = () => {
     }
   };
 
+  // 🔹 Delete a meal (DELETE request to backend)
+  const handleDeleteMeal = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8070/api/meals/${id}`);
+      setMeals(meals.filter((meal) => meal._id !== id));
+    } catch (error) {
+      console.error("Error deleting meal:", error);
+    }
+  };
+
+  // 🔹 Open Edit Dialog
+  const handleOpenEditDialog = (meal) => {
+    setEditMeal(meal);
+    setOpenDialog(true);
+  };
+
+  // 🔹 Close Edit Dialog
+  const handleCloseEditDialog = () => {
+    setEditMeal(null);
+    setOpenDialog(false);
+  };
+
+  // 🔹 Update Meal (PUT request to backend)
+  const handleUpdateMeal = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8070/api/meals/${editMeal._id}`,
+        editMeal
+      );
+      setMeals(
+        meals.map((meal) => (meal._id === editMeal._id ? response.data : meal))
+      );
+      handleCloseEditDialog();
+    } catch (error) {
+      console.error("Error updating meal:", error);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -66,15 +108,13 @@ const MealPlanner = () => {
         fontWeight="bold"
         textAlign="center"
         sx={{
-          color: "#ffffff",
+          color: "#rgba(0,0,0,0.4)",
           textShadow: "0px 2px 5px rgba(0,0,0,0.4)",
           mb: 3,
         }}
       >
-        🍽️ Meal Planner
+        🍽️New Recipes
       </Typography>
-
-      
 
       {/* 📜 Meal Form */}
       <MealForm onMealSubmit={handleMealSubmit} />
@@ -85,7 +125,7 @@ const MealPlanner = () => {
         fontWeight="bold"
         textAlign="left"
         sx={{
-          color: "#ffffff",
+          color: "#rgba(0,0,0,0.4)",
           mt: 4,
           mb: 2,
         }}
@@ -109,12 +149,73 @@ const MealPlanner = () => {
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.3 }}
               >
-                <MealCard meal={meal} />
+                <MealCard
+                  meal={meal}
+                  onDelete={() => handleDeleteMeal(meal._id)}
+                  onEdit={() => handleOpenEditDialog(meal)}
+                />
               </motion.div>
             </Grid>
           ))}
         </Grid>
       )}
+
+      {/* ✏️ Edit Meal Dialog */}
+      <Dialog open={openDialog} onClose={handleCloseEditDialog}>
+        <DialogTitle>Edit Meal</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Meal Name"
+            fullWidth
+            margin="dense"
+            value={editMeal?.name || ""}
+            onChange={(e) => setEditMeal({ ...editMeal, name: e.target.value })}
+          />
+          <TextField
+            label="Description"
+            fullWidth
+            margin="dense"
+            multiline
+            rows={2}
+            value={editMeal?.description || ""}
+            onChange={(e) =>
+              setEditMeal({ ...editMeal, description: e.target.value })
+            }
+          />
+          <TextField
+            label="Price ($)"
+            fullWidth
+            margin="dense"
+            type="number"
+            value={editMeal?.price || ""}
+            onChange={(e) =>
+              setEditMeal({ ...editMeal, price: e.target.value })
+            }
+          />
+          <TextField
+            label="Calories"
+            fullWidth
+            margin="dense"
+            type="number"
+            value={editMeal?.calories || ""}
+            onChange={(e) =>
+              setEditMeal({ ...editMeal, calories: e.target.value })
+            }
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEditDialog} color="secondary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleUpdateMeal}
+            variant="contained"
+            color="primary"
+          >
+            Save Changes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

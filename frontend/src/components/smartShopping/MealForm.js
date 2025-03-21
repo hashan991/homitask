@@ -7,9 +7,15 @@ import {
   Button,
   Typography,
   Card,
+  InputAdornment,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import AddIcon from "@mui/icons-material/Add";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import DescriptionIcon from "@mui/icons-material/Description";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import FastfoodIcon from "@mui/icons-material/Fastfood";
 
 const MealForm = ({ onMealSubmit }) => {
   const [meal, setMeal] = useState({
@@ -43,13 +49,16 @@ const MealForm = ({ onMealSubmit }) => {
       transition={{ duration: 0.5 }}
     >
       <Card
-        elevation={6}
+        elevation={8}
         sx={{
           p: 4,
-          borderRadius: 3,
+          borderRadius: "15px",
           backdropFilter: "blur(10px)",
           background: "rgba(255, 255, 255, 0.1)",
-          boxShadow: "0px 10px 30px rgba(0,0,0,0.2)",
+          boxShadow: "0px 10px 30px rgba(0,0,0,0.3)",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          maxWidth: "600px",
+          mx: "auto",
         }}
       >
         {/* 🍽️ Form Title */}
@@ -58,12 +67,12 @@ const MealForm = ({ onMealSubmit }) => {
           fontWeight="bold"
           textAlign="center"
           sx={{
-            color: "#333",
-            textShadow: "0px 2px 5px rgba(0,0,0,0.3)",
+            color: "rgba(251, 19, 19, 0.3)",
+            
             mb: 3,
           }}
         >
-          Add a New Meal 🍕
+          Add a New Recipes 🍕
         </Typography>
 
         {/* 📝 Meal Form */}
@@ -80,6 +89,13 @@ const MealForm = ({ onMealSubmit }) => {
             variant="outlined"
             fullWidth
             required
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <RestaurantIcon />
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             label="Meal Description"
@@ -91,6 +107,13 @@ const MealForm = ({ onMealSubmit }) => {
             rows={3}
             fullWidth
             required
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <DescriptionIcon />
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             label="Price ($)"
@@ -101,6 +124,13 @@ const MealForm = ({ onMealSubmit }) => {
             variant="outlined"
             fullWidth
             required
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AttachMoneyIcon />
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             label="Calories"
@@ -111,6 +141,13 @@ const MealForm = ({ onMealSubmit }) => {
             variant="outlined"
             fullWidth
             required
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <FitnessCenterIcon />
+                </InputAdornment>
+              ),
+            }}
           />
           <Select
             name="category"
@@ -118,12 +155,28 @@ const MealForm = ({ onMealSubmit }) => {
             onChange={handleChange}
             fullWidth
             variant="outlined"
-            sx={{ background: "#fff", borderRadius: "5px" }}
+            sx={{
+              background: "#fff",
+              borderRadius: "8px",
+              fontWeight: "bold",
+            }}
           >
-            <MenuItem value="Breakfast">Breakfast</MenuItem>
-            <MenuItem value="Lunch">Lunch</MenuItem>
-            <MenuItem value="Dinner">Dinner</MenuItem>
-            <MenuItem value="Snack">Snack</MenuItem>
+            <MenuItem value="Breakfast">
+              <FastfoodIcon sx={{ mr: 1 }} />
+              Breakfast
+            </MenuItem>
+            <MenuItem value="Lunch">
+              <FastfoodIcon sx={{ mr: 1 }} />
+              Lunch
+            </MenuItem>
+            <MenuItem value="Dinner">
+              <FastfoodIcon sx={{ mr: 1 }} />
+              Dinner
+            </MenuItem>
+            <MenuItem value="Snack">
+              <FastfoodIcon sx={{ mr: 1 }} />
+              Snack
+            </MenuItem>
           </Select>
 
           {/* ✨ Animated Add Meal Button */}
@@ -137,12 +190,15 @@ const MealForm = ({ onMealSubmit }) => {
               fullWidth
               startIcon={<AddIcon />}
               sx={{
-                background: "linear-gradient(to right, #6a11cb, #2575fc)",
-                boxShadow: "0px 5px 15px rgba(106, 17, 203, 0.4)",
+                background: "linear-gradient(to right, #ff416c, #ff4b2b)",
+                boxShadow: "0px 5px 15px rgba(255, 65, 108, 0.4)",
                 color: "#fff",
                 fontWeight: "bold",
+                fontSize: "1rem",
+                py: 1.2,
+                borderRadius: "10px",
                 "&:hover": {
-                  background: "linear-gradient(to right, #2575fc, #6a11cb)",
+                  background: "linear-gradient(to right, #ff4b2b, #ff416c)",
                 },
               }}
             >

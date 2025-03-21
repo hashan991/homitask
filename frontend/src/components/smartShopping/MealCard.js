@@ -1,8 +1,10 @@
 import React from "react";
-import { Card, CardContent, Typography, Box } from "@mui/material";
+import { Card, CardContent, Typography, Box, Button } from "@mui/material";
 import { motion } from "framer-motion";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const MealCard = ({ meal }) => {
+const MealCard = ({ meal, onEdit, onDelete }) => {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
@@ -13,8 +15,9 @@ const MealCard = ({ meal }) => {
           borderRadius: 3,
           boxShadow: 5,
           transition: "0.3s",
-          background: "linear-gradient(135deg, #f3f4f6, #ffffff)",
+          background: "linear-gradient(to bottom, #ffffff, #f3f4f6)",
           overflow: "hidden",
+          backdropFilter: "blur(10px)",
         }}
       >
         <CardContent>
@@ -74,6 +77,40 @@ const MealCard = ({ meal }) => {
             >
               💰 Price: ${meal.price}
             </Typography>
+          </Box>
+
+          {/* ✏️ Edit & 🗑 Delete Buttons */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              mt: 2,
+            }}
+          >
+            <Button
+              startIcon={<EditIcon />}
+              variant="contained"
+              color="primary"
+              sx={{
+                bgcolor: "#1976d2",
+                "&:hover": { bgcolor: "#1565c0" },
+                borderRadius: "8px",
+              }}
+              onClick={onEdit}
+            >
+              Edit
+            </Button>
+            <Button
+              startIcon={<DeleteIcon />}
+              variant="contained"
+              color="error"
+              sx={{
+                borderRadius: "8px",
+              }}
+              onClick={onDelete}
+            >
+              Delete
+            </Button>
           </Box>
         </CardContent>
       </Card>
