@@ -115,7 +115,7 @@ const Sidebar2 = () => {
         )}
         {(user?.email === "hashan@email.com" ||
           user?.email === "homitask@gmail.com") && (
-          <StyledListItem button onClick={() => navigate("/dashOrderreport")}>
+          <StyledListItem button onClick={() => navigate("/dashbudgetplanner")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <BuildIcon />
             </ListItemIcon>

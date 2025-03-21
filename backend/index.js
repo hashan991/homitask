@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 8070;
 app.use(cors());
 app.use(bodyParser.json());
 
+
+
 const URL = process.env.MONGODB_URL;
 
 mongoose.connect(URL, {
@@ -32,6 +34,18 @@ app.use("/test5", testRouter5);
 const testRouter = require("./routes/test/rtest.js");
 app.use("/test", testRouter);
 
+// Import Routes
+const mealRoutes = require("./routes/smartShopping/mealRoutes");
+const budgetRoutes = require("./routes/smartShopping/budgetRoutes");
+
+// Routes
+app.use("/api/meals", mealRoutes);
+app.use("/api/budget", budgetRoutes);
+
+// Root API Route
+app.get("/", (req, res) => {
+  res.send("Meal Planning API is running...");
+});
 
 
 
