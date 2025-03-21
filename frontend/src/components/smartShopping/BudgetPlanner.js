@@ -184,7 +184,7 @@ const BudgetPlanner = () => {
                             whileHover={{ scale: 1.05 }}
                             transition={{ duration: 0.3 }}
                           >
-                            <MealCard meal={meal} />
+                            <MealCard meal={meal} showActions={false} />
                           </motion.div>
                         </Grid>
                       ))
@@ -212,7 +212,7 @@ const BudgetPlanner = () => {
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <MealCard meal={snack} />
+                        <MealCard meal={snack} showActions={false} />
                       </motion.div>
                     </Grid>
                   ))}

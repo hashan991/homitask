@@ -1,10 +1,8 @@
 import React from "react";
 import { Card, CardContent, Typography, Box, Button } from "@mui/material";
 import { motion } from "framer-motion";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 
-const MealCard = ({ meal, onEdit, onDelete }) => {
+const MealCard = ({ meal, showActions = true }) => {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
@@ -15,23 +13,22 @@ const MealCard = ({ meal, onEdit, onDelete }) => {
           borderRadius: 3,
           boxShadow: 5,
           transition: "0.3s",
-          background: "linear-gradient(to bottom, #ffffff, #f3f4f6)",
+          background: "linear-gradient(135deg, #f3f4f6, #ffffff)",
           overflow: "hidden",
-          backdropFilter: "blur(10px)",
         }}
       >
         <CardContent>
-          {/* 🔹 Meal Name */}
+          {/* Meal Name */}
           <Typography variant="h6" fontWeight="bold" gutterBottom>
             {meal.name}
           </Typography>
 
-          {/* 🔹 Meal Description */}
+          {/* Meal Description */}
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
             {meal.description}
           </Typography>
 
-          {/* 🔹 Category */}
+          {/* Category */}
           <Typography
             variant="body2"
             fontWeight="bold"
@@ -48,7 +45,7 @@ const MealCard = ({ meal, onEdit, onDelete }) => {
             {meal.category}
           </Typography>
 
-          {/* 🔹 Calories & Price */}
+          {/* Calories & Price */}
           <Box
             sx={{
               display: "flex",
@@ -79,39 +76,25 @@ const MealCard = ({ meal, onEdit, onDelete }) => {
             </Typography>
           </Box>
 
-          {/* ✏️ Edit & 🗑 Delete Buttons */}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              mt: 2,
-            }}
-          >
-            <Button
-              startIcon={<EditIcon />}
-              variant="contained"
-              color="primary"
-              sx={{
-                bgcolor: "#1976d2",
-                "&:hover": { bgcolor: "#1565c0" },
-                borderRadius: "8px",
-              }}
-              onClick={onEdit}
-            >
-              Edit
-            </Button>
-            <Button
-              startIcon={<DeleteIcon />}
-              variant="contained"
-              color="error"
-              sx={{
-                borderRadius: "8px",
-              }}
-              onClick={onDelete}
-            >
-              Delete
-            </Button>
-          </Box>
+          {/* Show Edit & Delete Buttons Only If `showActions` is True */}
+          {showActions && (
+            <Box display="flex" justifyContent="space-between" mt={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ textTransform: "none" }}
+              >
+                ✏ Edit
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                sx={{ textTransform: "none" }}
+              >
+                🗑 Delete
+              </Button>
+            </Box>
+          )}
         </CardContent>
       </Card>
     </motion.div>
