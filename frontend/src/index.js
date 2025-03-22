@@ -12,6 +12,10 @@ import RegisterPage from "./pages/RegisterPage";
 import Home from "./pages/Home";
 import DashOrderForm from "./components/test/DashOrderForm";
 import DashOrderTable from "./components/test/DsahOrderTable";
+import DashShoppingForm from "./components/shoppingList/dashShoppingForm";
+import DashShoppingTable from "./components/shoppingList/dashShoppingTable";
+import DashUpdateForm from "./components/shoppingList/dashUpdateForm";
+import UpdateForm from "./components/shoppingList/updateForm";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -24,6 +28,11 @@ root.render(
         <Route path="/app" element={<Home />} />
         <Route path="/dashOrderForm" element={<DashOrderForm />} />
         <Route path="/dashOrderTable" element={<DashOrderTable />} />
+        <Route path="/dashShoppingForm" element={<DashShoppingForm />} />
+        <Route path="/dashShoppingTable" element={<DashShoppingTable />} />
+        <Route path="/dashupdateform" element={<DashUpdateForm />} />
+        <Route path="/updateForm" element={<UpdateForm />} />
+           
       </Routes>
     </AuthProvider>
   </BrowserRouter>
