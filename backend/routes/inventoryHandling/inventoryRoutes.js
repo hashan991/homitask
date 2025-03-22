@@ -5,31 +5,22 @@ const Inventory = require("../../models/inventoryHandling/inventoryModel.js"); /
 // ➤ Add Inventory Item
 router.post("/add", async (req, res) => {
     try {
-        const { name, quantity, category, quantityType, threshold } = req.body;
-
-        // Input validation (Ensure all fields are provided)
-        if (!name || !quantity || !category || !quantityType || !threshold) {
-            return res.status(400).json({ error: "All fields are required" });
-        }
-
-        // Input validation (Ensure quantity and threshold are positive numbers)
-        if (quantity < 0 || threshold < 0) {
-            return res.status(400).json({ error: "Quantity and threshold must be positive numbers" });
-        }
+        const { name, quantity, category, quantityType, threshold, expiryDate } = req.body;
 
         const newItem = new Inventory({
             name,
             quantity,
             category,
-            quantityType, // Changed to camelCase to match model
+            quantityType,
             threshold,
+            expiryDate,
         });
 
         await newItem.save();
         res.status(201).json({ message: "Item added successfully", newItem });
 
     } catch (error) {
-        console.error("Error adding inventory item:", error);
+        console.error(error);
         res.status(500).json({ error: "Error adding inventory item" });
     }
 });
@@ -40,7 +31,7 @@ router.get("/", async (req, res) => {
         const items = await Inventory.find();
         res.json(items);
     } catch (error) {
-        console.error("Error retrieving inventory:", error);
+        console.error(error);
         res.status(500).json({ error: "Error retrieving inventory" });
     }
 });
@@ -51,16 +42,6 @@ router.put("/update/:id", async (req, res) => {
         const { id } = req.params;
         const updatedData = req.body;
 
-        // Validation before updating
-        if (!updatedData.name || !updatedData.quantity || !updatedData.category || !updatedData.quantityType || !updatedData.threshold) {
-            return res.status(400).json({ error: "All fields are required for update" });
-        }
-
-        // Input validation (Ensure quantity and threshold are positive numbers)
-        if (updatedData.quantity < 0 || updatedData.threshold < 0) {
-            return res.status(400).json({ error: "Quantity and threshold must be positive numbers" });
-        }
-
         const updatedItem = await Inventory.findByIdAndUpdate(id, updatedData, { new: true });
 
         if (!updatedItem) {
@@ -70,7 +51,7 @@ router.put("/update/:id", async (req, res) => {
         res.json({ message: "Item updated successfully", updatedItem });
 
     } catch (error) {
-        console.error("Error updating inventory item:", error);
+        console.error(error);
         res.status(500).json({ error: "Error updating inventory item" });
     }
 });
@@ -89,7 +70,7 @@ router.delete("/delete/:id", async (req, res) => {
         res.json({ message: "Item deleted successfully" });
 
     } catch (error) {
-        console.error("Error deleting inventory item:", error);
+        console.error(error);
         res.status(500).json({ error: "Error deleting inventory item" });
     }
 });

@@ -1,159 +1,114 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Box, TextField, Typography, Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@mui/material';
 
 export default function CleaningTable() {
   const [inventory, setInventory] = useState([]);
+  const [removeInventory, setRemoveInventory] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const navigate = useNavigate();
-  const THRESHOLD = 10; // Permanent threshold value
+  const THRESHOLD = 10;
 
-  // Function to fetch inventory items from the server
+  useEffect(() => {
+    fetchInventory();
+    fetchRemoveInventory();
+  }, []);
+
   const fetchInventory = async () => {
     try {
       const response = await fetch('http://localhost:8070/api/inventory');
       if (response.ok) {
         const data = await response.json();
         setInventory(data);
-      } else {
-        console.error('Failed to fetch inventory');
       }
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
-  // Fetch inventory when the component mounts
-  useEffect(() => {
-    fetchInventory();
-  }, []);
-
-  // Function to handle updating an inventory item
-  const handleUpdate = (item) => {
-    navigate('/dashinventoryform', { state: { item } });
-  };
-
-  // Function to handle deleting an inventory item
-  const handleDelete = async (id) => {
+  const fetchRemoveInventory = async () => {
     try {
-      const response = await fetch(`http://localhost:8070/api/inventory/delete/${id}`, {
-        method: 'DELETE',
-      });
-
+      const response = await fetch('http://localhost:8070/api/removeinventory');
       if (response.ok) {
-        await fetchInventory(); // Refresh the table after deletion
-        alert('Inventory item deleted successfully');
-      } else {
-        const errorData = await response.json();
-        console.error('Failed to delete inventory item:', errorData.message || errorData.error);
-        alert(`Failed to delete inventory item: ${errorData.message || errorData.error}`);
+        const data = await response.json();
+        setRemoveInventory(data);
       }
     } catch (error) {
-      console.error('Error deleting inventory item:', error);
-      alert('An error occurred while deleting the inventory item.');
+      console.error('Error:', error);
     }
   };
 
-  // Group inventory by item name and sum quantities for duplicates
-  const groupedInventory = inventory.reduce((acc, item) => {
-    // Find if the item already exists in the accumulator
-    const existingItem = acc.find(i => i.name === item.name && i.category === item.category);
-    
-    if (existingItem) {
-      // If it exists, add the quantity to the existing item
-      existingItem.quantity += item.quantity;
-    } else {
-      // If it doesn't exist, add the item to the accumulator
-      acc.push({ ...item });
-    }
-    return acc;
-  }, []);
+  const groupByItem = (items) => {
+    return items.reduce((acc, item) => {
+      const existingItem = acc.find(i => i.name === item.name);
+      if (existingItem) {
+        existingItem.quantity += item.quantity;
+      } else {
+        acc.push({ ...item });
+      }
+      return acc;
+    }, []);
+  };
 
-  // Filter inventory based on search query and category "cleaning"
-  const filteredInventory = groupedInventory.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase()) && item.category.toLowerCase() === 'cleaning'
+  const filteredInventory = groupByItem(inventory).filter(
+    item => item.name.toLowerCase().includes(searchQuery.toLowerCase()) && item.category.toLowerCase() === 'cleaning'
   );
 
+  const filteredRemoveInventory = groupByItem(removeInventory).filter(
+    item => item.category.toLowerCase() === 'cleaning'
+  );
+
+  const mergedInventory = filteredInventory.map(item => {
+    const removedItem = filteredRemoveInventory.find(i => i.name === item.name) || { quantity: 0 };
+    return {
+      ...item,
+      quantity: item.quantity - removedItem.quantity
+    };
+  });
+
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ marginBottom: '20px', color: '#000000', textAlign: 'center' }}>Cleaning Inventory</h1>
-      
-      {/* Search Bar */}
-      <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <input
-          type="text"
-          placeholder="Search by Item Name"
+    <Box sx={{ padding: 3, fontFamily: 'Arial, sans-serif' }}>
+      {/* Title */}
+      <Typography variant="h4" align="center" sx={{ fontWeight: 'bold', marginBottom: 3, color: '#2C3E50' }}>
+        Remaining Cleaning Inventory
+      </Typography>
+
+      {/* Search Field */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 3 }}>
+        <TextField
+          label="Search by Item Name"
+          variant="outlined"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          style={{
-            padding: '10px',
-            fontSize: '16px',
-            border: '1px solid #ccc',
-            borderRadius: '5px',
-            width: '300px',
-            marginRight: '20px'
-          }}
+          sx={{ width: '300px', backgroundColor: 'white', borderRadius: 1 }}
         />
-      </div>
-      
-      <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #000000' }}>
-        <thead>
-          <tr style={{ backgroundColor: '#7D2CE0', color: '#fff' }}>
-            <th style={{ border: '1px solid #000000', padding: '12px' }}>Item Name</th>
-            <th style={{ border: '1px solid #000000', padding: '12px' }}>Quantity</th>
-            <th style={{ border: '1px solid #000000', padding: '12px' }}>Category</th>
-            <th style={{ border: '1px solid #000000', padding: '12px' }}>Quantity Type</th> {/* Added Quantity Type */}
-            <th style={{ border: '1px solid #000000', padding: '12px' }}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredInventory.map((item) => (
-            <tr key={item.name + item.category} style={{ backgroundColor: '#fff' }}>
-              <td style={{ border: '1px solid #000000', padding: '12px' }}>{item.name}</td>
-              <td 
-                style={{ 
-                  border: '1px solid #000000', 
-                  padding: '12px', 
-                  color: item.quantity < THRESHOLD ? 'red' : 'black', // Red color for low stock
-                  fontWeight: item.quantity < THRESHOLD ? 'bold' : 'normal'
-                }}
-              >
-                {item.quantity} {item.quantity < THRESHOLD ? '🔴 😞' : ''}
-              </td>
-              <td style={{ border: '1px solid #000000', padding: '12px' }}>{item.category}</td>
-              <td style={{ border: '1px solid #000000', padding: '12px' }}>{item.quantityType}</td> {/* Displaying Quantity Type */}
-              <td style={{ border: '1px solid #000000', padding: '12px', textAlign: 'center' }}>
-                <button
-                  onClick={() => handleUpdate(item)}
-                  style={{
-                    padding: '8px 12px',
-                    backgroundColor: '#007bff',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    marginRight: '8px'
-                  }}
-                >
-                  Update
-                </button>
-                <button
-                  onClick={() => handleDelete(item._id)}
-                  style={{
-                    padding: '8px 12px',
-                    backgroundColor: '#dc3545',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      </Box>
+
+      {/* Inventory Table */}
+      <Paper sx={{ padding: 2, borderRadius: 3, boxShadow: 3 }}>
+        <Table sx={{ minWidth: 650 }}>
+          <TableHead>
+            <TableRow sx={{ backgroundColor: '#3498DB' }}>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Item Name</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Remaining Quantity</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Category</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Quantity Type</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Expire Date</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {mergedInventory.map((item) => (
+              <TableRow key={item.name} sx={{ backgroundColor: item.quantity < THRESHOLD ? '#FFEBEE' : 'white' }}>
+                <TableCell>{item.name}</TableCell>
+                <TableCell sx={{ color: item.quantity < THRESHOLD ? 'red' : 'black', fontWeight: 'bold' }}>
+                  {item.quantity} {item.quantity < THRESHOLD ? '🔴 😞' : ''}
+                </TableCell>
+                <TableCell>{item.category}</TableCell>
+                <TableCell>{item.quantityType}</TableCell>
+                <TableCell>{item.expiryDate ? new Date(item.expiryDate).toLocaleDateString() : "N/A"}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
+    </Box>
   );
 }

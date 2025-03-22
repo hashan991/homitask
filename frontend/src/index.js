@@ -17,6 +17,8 @@ import DashInventoryTable from "./components/inventoryHandling/DashInventoryTabl
 import DashGarageTable from "./components/inventoryHandling/DashGarageTable";
 import DashCleaningTable from "./components/inventoryHandling/DashCleaningTable";
 import DashKitchenTable from "./components/inventoryHandling/DashKitchenTable";
+import DashRemoveInventoryForm from "./components/inventoryHandling/DashRemoveInventoryForm";
+import DashRemoveInventoryTable from "./components/inventoryHandling/DashRemoveInventoryTable";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -37,7 +39,8 @@ root.render(
         <Route path="/dashgaragetable" element={<DashGarageTable />} />
         <Route path="/dashcleaningtable" element={<DashCleaningTable />} />
         <Route path="/dashkitchentable" element={<DashKitchenTable />} />
-
+        <Route path="/dashremoveinventoryform" element={<DashRemoveInventoryForm />} />
+        <Route path="/dashremoveinventorytable" element={<DashRemoveInventoryTable />} />
 
 
       </Routes>

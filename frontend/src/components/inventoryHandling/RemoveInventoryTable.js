@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function InventoryTable() {
-  const [inventory, setInventory] = useState([]);
+export default function RemoveInventoryTable() {
+  const [removedInventory, setRemovedInventory] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false); // Loading state
   const navigate = useNavigate();
 
-  // Function to fetch inventory items from the server
-  const fetchInventory = async () => {
+  // Function to fetch removed inventory items from the server
+  const fetchRemovedInventory = async () => {
     setLoading(true); // Set loading to true when fetching starts
     try {
-      const response = await fetch('http://localhost:8070/api/inventory');
+      const response = await fetch('http://localhost:8070/api/removeinventory');
       if (response.ok) {
         const data = await response.json();
-        setInventory(data);
+        setRemovedInventory(data);
       } else {
-        console.error('Failed to fetch inventory');
+        console.error('Failed to fetch removed inventory');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -25,45 +25,45 @@ export default function InventoryTable() {
     }
   };
 
-  // Fetch inventory when the component mounts
+  // Fetch removed inventory when the component mounts
   useEffect(() => {
-    fetchInventory();
+    fetchRemovedInventory();
   }, []);
 
-  // Function to handle updating an inventory item
+  // Function to handle updating a removed inventory item
   const handleUpdate = (item) => {
-    navigate('/dashinventoryform', { state: { item } });
+    navigate('/dashremoveinventoryform', { state: { item } });
   };
 
-  // Function to handle deleting an inventory item
+  // Function to handle deleting a removed inventory item
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8070/api/inventory/delete/${id}`, {
+      const response = await fetch(`http://localhost:8070/api/removeinventory/delete/${id}`, {
         method: 'DELETE',
       });
 
       if (response.ok) {
-        await fetchInventory(); // Refresh the table after deletion
-        alert('Inventory item deleted successfully');
+        await fetchRemovedInventory(); // Refresh the table after deletion
+        alert('Removed inventory item deleted successfully');
       } else {
         const errorData = await response.json();
-        console.error('Failed to delete inventory item:', errorData.message || errorData.error);
-        alert(`Failed to delete inventory item: ${errorData.message || errorData.error}`);
+        console.error('Failed to delete removed inventory item:', errorData.message || errorData.error);
+        alert(`Failed to delete removed inventory item: ${errorData.message || errorData.error}`);
       }
     } catch (error) {
-      console.error('Error deleting inventory item:', error);
-      alert('An error occurred while deleting the inventory item.');
+      console.error('Error deleting removed inventory item:', error);
+      alert('An error occurred while deleting the removed inventory item.');
     }
   };
 
-  // Filter inventory based on search query
-  const filteredInventory = inventory.filter(item =>
+  // Filter removed inventory based on search query
+  const filteredRemovedInventory = removedInventory.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ marginBottom: '20px', color: '#000000', textAlign: 'center' }}>Inventory List</h1>
+      <h1 style={{ marginBottom: '20px', color: '#000000', textAlign: 'center' }}>Removed Inventory List</h1>
       
       {/* Search Bar */}
       <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -98,7 +98,7 @@ export default function InventoryTable() {
             </tr>
           </thead>
           <tbody>
-            {filteredInventory.map((item) => (
+            {filteredRemovedInventory.map((item) => (
               <tr key={item._id} style={{ backgroundColor: '#fff' }}>
                 <td style={{ border: '1px solid #000000', padding: '12px' }}>{item.name}</td>
                 <td style={{ border: '1px solid #000000', padding: '12px' }}>{item.quantity}</td>

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-
-export default function InventoryForm() {
+export default function RemoveInventoryForm() {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -15,7 +14,7 @@ export default function InventoryForm() {
     category: "",
     threshold: "",
     quantityType: "",
-    expiryDate: "", // New Expire Date field
+    expiryDate: "", // Expiry Date field for removal
   });
 
   const [errors, setErrors] = useState({});
@@ -31,7 +30,7 @@ export default function InventoryForm() {
         category: item.category,
         threshold: item.threshold,
         quantityType: item.quantityType || "",
-        expiryDate: item.expiryDate || "", // Set Expire Date if available
+        expiryDate: item.expiryDate || "", // Set Expiry Date if available
       });
       setInventoryId(item._id);
       setIsEditMode(true);
@@ -61,7 +60,7 @@ export default function InventoryForm() {
     if (!formData.threshold || isNaN(formData.threshold) || formData.threshold < 0)
       newErrors.threshold = "Threshold must be a non-negative number";
     if (!formData.quantityType) newErrors.quantityType = "Please select a Quantity Type";
-    if (!formData.expiryDate) newErrors.expiryDate = "Expire Date is required"; // Validate expire date
+    if (!formData.expiryDate) newErrors.expiryDate = "Expire Date is required"; // Validate expiry date
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -93,8 +92,8 @@ export default function InventoryForm() {
 
     try {
       const url = isEditMode
-        ? `http://localhost:8070/api/inventory/update/${inventoryId}`
-        : "http://localhost:8070/api/inventory/add";
+        ? `http://localhost:8070/api/removeinventory/update/${inventoryId}`
+        : "http://localhost:8070/api/removeinventory/add";
       const method = isEditMode ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -104,14 +103,14 @@ export default function InventoryForm() {
       });
 
       if (response.ok) {
-        alert(`Item ${isEditMode ? "updated" : "added"} successfully`);
-        navigate("/dashinventorytable");
+        alert(`Item ${isEditMode ? "updated" : "added"} to removed inventory successfully`);
+        navigate("/dashremoveinventorytable");
       } else {
-        alert(`Failed to ${isEditMode ? "update" : "add"} item`);
+        alert(`Failed to ${isEditMode ? "update" : "add"} item to removed inventory`);
       }
     } catch (error) {
       console.error("Error:", error);
-      alert(`An error occurred while ${isEditMode ? "updating" : "adding"} the item.`);
+      alert(`An error occurred while ${isEditMode ? "updating" : "adding"} the removed item.`);
     }
   };
 
@@ -133,9 +132,8 @@ export default function InventoryForm() {
         width: "100%",
         maxWidth: "450px",
         border: "2px solid #3498db", 
-        
       }}>
-        <h2 style={{ textAlign: "center", marginBottom: "20px", color: "#3498db" }}>Inventory Form</h2>
+        <h2 style={{ textAlign: "center", marginBottom: "20px", color: "#3498db" }}>Removed Inventory Form</h2>
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: "15px" }}>
             <label htmlFor="name" style={{ color: "#333" }}>Item Name:</label>
@@ -282,26 +280,27 @@ export default function InventoryForm() {
               marginBottom: "15px"
             }}
           >
-            {isEditMode ? "Update Item" : "Add Item"}
+            {isEditMode ? "Update Removed Item" : "Add to Removed Inventory"}
           </button>
-        </form>
-
-        <button
+          <button
           type="button"
-          onClick={() => navigate("/dashinventorytable")}
+          onClick={() => navigate("/dashremoveinventorytable")}
           style={{
             marginTop: "20px",
             backgroundColor: "#e74c3c",
-            color: "white",
-            padding: "10px 20px",
-            border: "none",
-            borderRadius: "5px",
-            width: "100%",
-            cursor: "pointer"
+              color: "white",
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "5px",
+              width: "100%",
+              cursor: "pointer",
+              marginBottom: "15px"
           }}
         >
-          View Table
+          View Remove Inventory Table
         </button>
+        
+        </form>
         </div>
       </div>
   );

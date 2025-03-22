@@ -78,7 +78,25 @@ const Sidebar = () => {
                             />
                         </ListItem>
                         <Divider sx={{ backgroundColor: "#ffffff" }} />
-
+                            {/* Work Order */}
+                            <ListItem 
+                            button 
+                            sx={{ 
+                                padding: "15px 20px", 
+                                border: '2px solid #354a5f', // Increased border width to 2px
+                                borderRadius: '10px', // Add more rounding to match the design
+                                margin: "10px 0", // Add vertical margin between list items
+                                backgroundColor: isActive(['/dashOrderForm', '/dashdrdertable','/dashstocklevel']) ? '#354a5f' : 'inherit' 
+                            }} 
+                            onClick={() => handleNavigation('/dashremoveinventoryform')}
+                        >
+                            <ListAltIcon sx={{ color: isActive(['/dashOrderForm', '/dashdrdertable','/dashstocklevel']) ? '#ffffff' : '#2c3e50' }} />
+                            <ListItemText 
+                                primary="Decrease Product" 
+                                sx={{ paddingLeft: "10px", color: isActive(['/dashOrderForm', '/dashdrdertable','/dashstocklevel']) ? '#ffffff' : '#2c3e50' }} 
+                            />
+                        </ListItem>
+                        <Divider sx={{ backgroundColor: "#ffffff" }} />
 
 
 

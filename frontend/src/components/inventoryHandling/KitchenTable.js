@@ -5,27 +5,28 @@ export default function KitchenTable() {
   const [inventory, setInventory] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const THRESHOLD = 10; // Permanent threshold value
 
-  // Function to fetch inventory items from the server
+  const THRESHOLD_QUANTITY = 10;
+  const THRESHOLD_KG = 1;
+  const THRESHOLD_L = 1;
+  const THRESHOLD_M = 1;
+
   const fetchInventory = async () => {
     try {
       const response = await fetch("http://localhost:8070/api/inventory");
       if (response.ok) {
         const data = await response.json();
 
-        // Group items by name and sum their quantities
         const groupedInventory = data.reduce((acc, item) => {
-          const key = item.name.toLowerCase(); // Use lowercase name as key
+          const key = item.name.toLowerCase();
           if (acc[key]) {
-            acc[key].quantity += item.quantity; // Sum the quantity
+            acc[key].quantity += item.quantity;
           } else {
-            acc[key] = { ...item }; // Store the first occurrence
+            acc[key] = { ...item };
           }
           return acc;
         }, {});
 
-        // Convert grouped object to an array
         setInventory(Object.values(groupedInventory));
       } else {
         console.error("Failed to fetch inventory");
@@ -35,17 +36,14 @@ export default function KitchenTable() {
     }
   };
 
-  // Fetch inventory when the component mounts
   useEffect(() => {
     fetchInventory();
   }, []);
 
-  // Function to handle updating an inventory item
   const handleUpdate = (item) => {
     navigate("/dashinventoryform", { state: { item } });
   };
 
-  // Function to handle deleting an inventory item
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
@@ -56,7 +54,7 @@ export default function KitchenTable() {
       );
 
       if (response.ok) {
-        await fetchInventory(); // Refresh the table after deletion
+        await fetchInventory();
         alert("Inventory item deleted successfully");
       } else {
         console.error("Failed to delete inventory item");
@@ -68,12 +66,26 @@ export default function KitchenTable() {
     }
   };
 
-  // Filter inventory based on search query and category "kitchen"
   const filteredInventory = inventory.filter(
     (item) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
       item.category.toLowerCase() === "kitchen"
   );
+
+  const isBelowThreshold = (item) => {
+    switch (item.quantityType.toLowerCase()) {
+      case "kg":
+        return item.quantity <= THRESHOLD_KG;
+      case "l":
+        return item.quantity <= THRESHOLD_L;
+      case "m":
+        return item.quantity <= THRESHOLD_M;
+      case "quantity":
+        return item.quantity <= THRESHOLD_QUANTITY;
+      default:
+        return false;
+    }
+  };
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
@@ -81,7 +93,6 @@ export default function KitchenTable() {
         Kitchen Inventory
       </h1>
 
-      {/* Search Bar */}
       <div style={{ marginBottom: "20px", display: "flex", justifyContent: "center", alignItems: "center" }}>
         <input
           type="text"
@@ -99,13 +110,21 @@ export default function KitchenTable() {
         />
       </div>
 
+      <div style={{ marginTop: "20px", fontSize: "14px", color: "#555", textAlign: "center" }}>
+        <p>1kg &lt; Item = Low stock level</p>
+        <p>1L &lt; Item = Low stock level</p>
+        <p>10 &lt; Item = Low stock level</p>
+        <p>1m &lt; Item = Low stock level</p>
+      </div>
+
       <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid #000000" }}>
         <thead>
           <tr style={{ backgroundColor: "#7D2CE0", color: "#fff" }}>
             <th style={{ border: "1px solid #000000", padding: "12px" }}>Item Name</th>
             <th style={{ border: "1px solid #000000", padding: "12px" }}>Quantity</th>
             <th style={{ border: "1px solid #000000", padding: "12px" }}>Category</th>
-            <th style={{ border: "1px solid #000000", padding: "12px" }}>Quantity Type</th> {/* Added Quantity Type */}
+            <th style={{ border: "1px solid #000000", padding: "12px" }}>Quantity Type</th>
+            <th style={{ border: "1px solid #000000", padding: "12px" }}>Expire Date</th>
             <th style={{ border: "1px solid #000000", padding: "12px" }}>Actions</th>
           </tr>
         </thead>
@@ -117,14 +136,17 @@ export default function KitchenTable() {
                 style={{
                   border: "1px solid #000000",
                   padding: "12px",
-                  color: item.quantity < THRESHOLD ? "red" : "black", // Red color for low stock
-                  fontWeight: item.quantity < THRESHOLD ? "bold" : "normal",
+                  color: isBelowThreshold(item) ? "red" : "black",
+                  fontWeight: isBelowThreshold(item) ? "bold" : "normal",
                 }}
               >
-                {item.quantity} {item.quantity < THRESHOLD ? "🔴 😞" : ""}
+                {item.quantity} {isBelowThreshold(item) ? "🔴 😞" : ""}
               </td>
               <td style={{ border: "1px solid #000000", padding: "12px" }}>{item.category}</td>
-              <td style={{ border: "1px solid #000000", padding: "12px" }}>{item.quantityType}</td> {/* Displaying Quantity Type */}
+              <td style={{ border: "1px solid #000000", padding: "12px" }}>{item.quantityType}</td>
+              <td style={{ border: "1px solid #000000", padding: "12px" }}>
+                {item.expiryDate ? new Date(item.expiryDate).toLocaleDateString() : "N/A"}
+              </td>
               <td style={{ border: "1px solid #000000", padding: "12px", textAlign: "center" }}>
                 <button
                   onClick={() => handleUpdate(item)}

@@ -5,7 +5,11 @@ export default function GarageTable() {
   const [inventory, setInventory] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
-  const THRESHOLD = 10; // Permanent threshold value
+
+  const THRESHOLD_QUANTITY = 10; // Permanent threshold for quantity
+  const THRESHOLD_KG = 1; // Threshold for kg
+  const THRESHOLD_L = 1; // Threshold for liters
+  const THRESHOLD_M = 1; // Threshold for meters
 
   // Function to fetch inventory items from the server and group by name
   const fetchInventory = async () => {
@@ -70,6 +74,22 @@ export default function GarageTable() {
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) && item.category.toLowerCase() === 'garage'
   );
 
+  // Function to determine if the item is below the threshold based on unit
+  const isBelowThreshold = (item) => {
+    switch (item.quantityType.toLowerCase()) {
+      case "kg":
+        return item.quantity <= THRESHOLD_KG;
+      case "l":
+        return item.quantity <= THRESHOLD_L;
+      case "m":
+        return item.quantity <= THRESHOLD_M;
+      case "quantity":
+        return item.quantity <= THRESHOLD_QUANTITY;
+      default:
+        return false;
+    }
+  };
+
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h1 style={{ marginBottom: '20px', color: '#000000', textAlign: 'center' }}>Garage Inventory</h1>
@@ -92,13 +112,22 @@ export default function GarageTable() {
         />
       </div>
       
+      {/* Notes under the table */}
+      <div style={{ marginTop: "20px", fontSize: "14px", color: "#555", textAlign: "center" }}>
+        <p>1kg &lt; Item = Low stock level</p>
+        <p>1L &lt; Item = Low stock level</p>
+        <p>10 &lt; Item = Low stock level</p>
+        <p>1m &lt; Item = Low stock level</p>
+      </div>
+      
       <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #000000' }}>
         <thead>
           <tr style={{ backgroundColor: '#7D2CE0', color: '#fff' }}>
             <th style={{ border: '1px solid #000000', padding: '12px' }}>Item Name</th>
             <th style={{ border: '1px solid #000000', padding: '12px' }}>Quantity</th>
             <th style={{ border: '1px solid #000000', padding: '12px' }}>Category</th>
-            <th style={{ border: '1px solid #000000', padding: '12px' }}>Quantity Type</th> {/* Added Quantity Type */}
+            <th style={{ border: '1px solid #000000', padding: '12px' }}>Quantity Type</th>
+            <th style={{ border: '1px solid #000000', padding: '12px' }}>Expiry Date</th> {/* Added Expiry Date column */}
             <th style={{ border: '1px solid #000000', padding: '12px' }}>Actions</th>
           </tr>
         </thead>
@@ -110,14 +139,18 @@ export default function GarageTable() {
                 style={{ 
                   border: '1px solid #000000', 
                   padding: '12px', 
-                  color: item.quantity < THRESHOLD ? 'red' : 'black', // Red color for low stock
-                  fontWeight: item.quantity < THRESHOLD ? 'bold' : 'normal'
+                  color: isBelowThreshold(item) ? 'red' : 'black', // Red color for low stock
+                  fontWeight: isBelowThreshold(item) ? 'bold' : 'normal'
                 }}
               >
-                {item.quantity} {item.quantity < THRESHOLD ? '🔴 😞' : ''}
+                {item.quantity} {isBelowThreshold(item) ? '🔴 😞' : ''}
               </td>
               <td style={{ border: '1px solid #000000', padding: '12px' }}>{item.category}</td>
-              <td style={{ border: '1px solid #000000', padding: '12px' }}>{item.quantityType}</td> {/* Displaying Quantity Type */}
+              <td style={{ border: '1px solid #000000', padding: '12px' }}>{item.quantityType}</td>
+              <td style={{ border: '1px solid #000000', padding: '12px' }}>
+                {/* Display Expiry Date */}
+                {item.expiryDate ? new Date(item.expiryDate).toLocaleDateString() : 'N/A'}
+              </td>
               <td style={{ border: '1px solid #000000', padding: '12px', textAlign: 'center' }}>
                 <button
                   onClick={() => handleUpdate(item)}
