@@ -68,7 +68,7 @@ export default function CleaningTable() {
     <Box sx={{ padding: 3, fontFamily: 'Arial, sans-serif' }}>
       {/* Title */}
       <Typography variant="h4" align="center" sx={{ fontWeight: 'bold', marginBottom: 3, color: '#2C3E50' }}>
-        Remaining Cleaning Inventory
+        Cleaning Inventory
       </Typography>
 
       {/* Search Field */}
