@@ -13,7 +13,12 @@
     "@testing-library/user-event": "^13.5.0",
     "ajv": "^6.12.6",
     "ajv-keywords": "^3.5.2",
+
+    "axios": "^1.8.1",
+    "framer-motion": "^12.5.0",
+
     "axios": "^1.8.3",
+
     "mui": "^0.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
