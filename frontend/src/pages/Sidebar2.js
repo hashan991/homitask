@@ -106,7 +106,7 @@ const Sidebar2 = () => {
         {/* Conditionally render the "Production Handling" button only for specific user */}
         {(user?.email === "nishan@email.com" ||
           user?.email === "homitask@gmail.com") && (
-          <StyledListItem button onClick={() => navigate("/dashreport")}>
+          <StyledListItem button onClick={() => navigate("/dashMealForm")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <LocalShippingIcon />
             </ListItemIcon>

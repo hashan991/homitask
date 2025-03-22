@@ -13,6 +13,11 @@ import Home from "./pages/Home";
 import DashOrderForm from "./components/test/DashOrderForm";
 import DashOrderTable from "./components/test/DsahOrderTable";
 
+import DashMealForm from "./components/mealPlaning/DashMealForm";
+import DashMealTable from "./components/mealPlaning/DashMealTable";
+
+
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
@@ -24,6 +29,9 @@ root.render(
         <Route path="/app" element={<Home />} />
         <Route path="/dashOrderForm" element={<DashOrderForm />} />
         <Route path="/dashOrderTable" element={<DashOrderTable />} />
+
+        <Route path="/dashMealForm" element={<DashMealForm />} />
+        <Route path="/dashMealTable" element={<DashMealTable />} />
       </Routes>
     </AuthProvider>
   </BrowserRouter>
