@@ -12,6 +12,12 @@ import Home from "./pages/Home";
 import DashOrderForm from "./components/test/DashOrderForm";
 import DashOrderTable from "./components/test/DsahOrderTable";
 
+
+import DashMealForm from "./components/mealPlaning/DashMealForm";
+import DashMealTable from "./components/mealPlaning/DashMealTable";
+
+
+
 import { Dashboard } from "@mui/icons-material";
 import DashInventoryForm from "./components/inventoryHandling/DashInventoryForm";
 import DashInventoryTable from "./components/inventoryHandling/DashInventoryTable";
@@ -28,6 +34,7 @@ import DashUpdateForm from "./components/shoppingList/dashUpdateForm";
 import UpdateForm from "./components/shoppingList/updateForm";
 
 
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
@@ -39,6 +46,10 @@ root.render(
         <Route path="/app" element={<Home />} />
         <Route path="/dashOrderForm" element={<DashOrderForm />} />
         <Route path="/dashOrderTable" element={<DashOrderTable />} />
+
+
+        <Route path="/dashMealForm" element={<DashMealForm />} />
+        <Route path="/dashMealTable" element={<DashMealTable />} />
 
 
         <Route path="/dashboard" element={<Dashboard />} />
@@ -57,6 +68,7 @@ root.render(
         <Route path="/dashupdateform" element={<DashUpdateForm />} />
         <Route path="/updateForm" element={<UpdateForm />} />
            
+
       </Routes>
     </AuthProvider>
   </BrowserRouter>

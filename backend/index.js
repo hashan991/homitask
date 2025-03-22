@@ -52,6 +52,9 @@ app.use("/rshopping", shoppingRouter);
 //Nishan
 
 
+const mealPlanRouter = require("./routes/mealPlaning/rmeal.js");
+app.use("/mealPlaning", mealPlanRouter);
+
 
 app.listen(PORT, () => {
   console.log(`Server is up and running on PORT : ${PORT}`);
