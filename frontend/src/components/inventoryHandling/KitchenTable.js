@@ -5,7 +5,7 @@ export default function KitchenTable() {
   const [inventory, setInventory] = useState([]);
   const [removeInventory, setRemoveInventory] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const THRESHOLD = {
+  const THRESHOLDS = {
     kg: 1,
     l: 1,
     m: 1,
@@ -68,6 +68,10 @@ export default function KitchenTable() {
       quantity: item.quantity - removedItem.quantity,
     };
   });
+  const isBelowThreshold = (item) => {
+    const threshold = THRESHOLDS[item.quantityType.toLowerCase()] || 0;
+    return item.quantity <= threshold;
+  };
 
   return (
     <Box sx={{ padding: 3, fontFamily: "Arial, sans-serif" }}>
@@ -96,17 +100,17 @@ export default function KitchenTable() {
           </TableHead>
           <TableBody>
             {mergedInventory.map((item) => (
-              <TableRow key={item.name} sx={{ backgroundColor: item.quantity < THRESHOLD ? "#FFEBEE" : "white" }}>
-                <TableCell sx={{ textAlign: "center" }}>{item.name}</TableCell>
-                <TableCell
-                  sx={{
-                    textAlign: "center",
-                    color: item.quantity < THRESHOLD ? "red" : "black",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {item.quantity} {item.quantity < THRESHOLD ? "🔴 😞" : ""}
-                </TableCell>
+            <TableRow key={item.name} sx={{ backgroundColor: isBelowThreshold(item) ? "#FFEBEE" : "white" }}>
+            <TableCell sx={{ textAlign: "center" }}>{item.name}</TableCell>
+            <TableCell
+                sx={{
+                textAlign: "center",
+                color: isBelowThreshold(item) ? "red" : "black",
+                fontWeight: "bold",
+                }}
+            >
+            {item.quantity} {isBelowThreshold(item) ? "🔴" : ""}
+            </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>{item.category}</TableCell>
                 <TableCell sx={{ textAlign: "center" }}>{item.quantityType}</TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
