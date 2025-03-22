@@ -52,13 +52,22 @@ app.get("/", (req, res) => {
 
 
 //nishitha
+const inventoryRoutes = require("./routes/inventoryHandling/inventoryRoutes.js");
+const removeInventoryRoutes = require("./routes/inventoryHandling/removeInventoryRoute.js"); // Import removeInventoryRoutes
+
+app.use("/api/inventory", inventoryRoutes);
+app.use("/api/removeinventory", removeInventoryRoutes); // Remove inventory routes
 
 
 //tashini
-
+const shoppingRouter = require("./routes/shoppingList/rshopping.js");
+app.use("/rshopping", shoppingRouter);
 
 //Nishan
 
+
+const mealPlanRouter = require("./routes/mealPlaning/rmeal.js");
+app.use("/mealPlaning", mealPlanRouter);
 
 
 app.listen(PORT, () => {

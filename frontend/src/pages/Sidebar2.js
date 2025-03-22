@@ -87,7 +87,7 @@ const Sidebar2 = () => {
         {/* Set flexGrow to 1 to ensure it fills the remaining space */}
         {(user?.email === "thashini@email.com" ||
           user?.email === "homitask@gmail.com") && (
-          <StyledListItem button onClick={() => navigate("/DashRep")}>
+          <StyledListItem button onClick={() => navigate("/dashShoppingForm")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <HomeIcon />
             </ListItemIcon>
@@ -96,7 +96,7 @@ const Sidebar2 = () => {
         )}
         {(user?.email === "nishitha@email.com" ||
           user?.email === "homitask@gmail.com") && (
-          <StyledListItem button onClick={() => navigate("/Dashreportin")}>
+          <StyledListItem button onClick={() => navigate("/dashinventoryform")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <InventoryIcon />
             </ListItemIcon>
@@ -106,7 +106,7 @@ const Sidebar2 = () => {
         {/* Conditionally render the "Production Handling" button only for specific user */}
         {(user?.email === "nishan@email.com" ||
           user?.email === "homitask@gmail.com") && (
-          <StyledListItem button onClick={() => navigate("/dashreport")}>
+          <StyledListItem button onClick={() => navigate("/dashMealForm")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <InventoryIcon />
             </ListItemIcon>
