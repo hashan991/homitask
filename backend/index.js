@@ -38,6 +38,11 @@ app.use("/test", testRouter);
 
 
 //nishitha
+const inventoryRoutes = require("./routes/inventoryHandling/inventoryRoutes.js");
+const removeInventoryRoutes = require("./routes/inventoryHandling/removeInventoryRoute.js"); // Import removeInventoryRoutes
+
+app.use("/api/inventory", inventoryRoutes);
+app.use("/api/removeinventory", removeInventoryRoutes); // Remove inventory routes
 
 
 //tashini
