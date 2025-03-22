@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import PRIImage from "../../images/PRI.jpg";
+import PRIImage from "../../images/homi.png";
 import { useEffect, useState } from "react";
 
 const Navbar = () => {

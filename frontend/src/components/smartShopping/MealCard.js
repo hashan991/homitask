@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent, Typography, Box, Button } from "@mui/material";
 import { motion } from "framer-motion";
 
-const MealCard = ({ meal, showActions = true }) => {
+const MealCard = ({ meal, showActions = true, onEdit, onDelete }) => {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
@@ -18,17 +18,14 @@ const MealCard = ({ meal, showActions = true }) => {
         }}
       >
         <CardContent>
-          {/* Meal Name */}
           <Typography variant="h6" fontWeight="bold" gutterBottom>
             {meal.name}
           </Typography>
 
-          {/* Meal Description */}
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
             {meal.description}
           </Typography>
 
-          {/* Category */}
           <Typography
             variant="body2"
             fontWeight="bold"
@@ -45,7 +42,6 @@ const MealCard = ({ meal, showActions = true }) => {
             {meal.category}
           </Typography>
 
-          {/* Calories & Price */}
           <Box
             sx={{
               display: "flex",
@@ -76,13 +72,13 @@ const MealCard = ({ meal, showActions = true }) => {
             </Typography>
           </Box>
 
-          {/* Show Edit & Delete Buttons Only If `showActions` is True */}
           {showActions && (
             <Box display="flex" justifyContent="space-between" mt={2}>
               <Button
                 variant="contained"
                 color="primary"
                 sx={{ textTransform: "none" }}
+                onClick={onEdit}
               >
                 ✏ Edit
               </Button>
@@ -90,6 +86,7 @@ const MealCard = ({ meal, showActions = true }) => {
                 variant="contained"
                 color="error"
                 sx={{ textTransform: "none" }}
+                onClick={onDelete}
               >
                 🗑 Delete
               </Button>

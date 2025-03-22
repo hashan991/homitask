@@ -100,13 +100,12 @@ const BudgetPlanner = () => {
           textAlign="center"
           sx={{
             mb: 3,
-            background: "linear-gradient(to right, #6a11cb, #2575fc)",
+            background:
+              "linear-gradient(to right,rgb(21, 29, 46),rgb(115, 120, 133))", // ✅ Smooth gradient mix
             boxShadow: "0px 5px 15px rgba(106, 17, 203, 0.4)",
             color: "#fff",
             fontWeight: "bold",
-            "&:hover": {
-              background: "linear-gradient(to right, #2575fc, #6a11cb)",
-            },
+            
           }}
         >
           🍽️ Budget Meal Planner
