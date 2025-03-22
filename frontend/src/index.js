@@ -56,10 +56,7 @@ root.render(
       <MealProvider>
         <BudgetProvider>
           <Routes>
-            <Route path="/" element={<StartupPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/app" element={<Home />} />
+           
             <Route path="/meal-planner" element={<MealPlanner />} />
             <Route path="/budget-planner" element={<BudgetPlanner />} />
             <Route path="/dashOrderForm" element={<DashOrderForm />} />
