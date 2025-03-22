@@ -87,7 +87,7 @@ const Sidebar2 = () => {
         {/* Set flexGrow to 1 to ensure it fills the remaining space */}
         {(user?.email === "thashini@email.com" ||
           user?.email === "homitask@gmail.com") && (
-          <StyledListItem button onClick={() => navigate("/DashRep")}>
+          <StyledListItem button onClick={() => navigate("/dashShoppingForm")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <HomeIcon />
             </ListItemIcon>

@@ -46,7 +46,8 @@ app.use("/api/removeinventory", removeInventoryRoutes); // Remove inventory rout
 
 
 //tashini
-
+const shoppingRouter = require("./routes/shoppingList/rshopping.js");
+app.use("/rshopping", shoppingRouter);
 
 //Nishan
 

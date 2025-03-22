@@ -11,6 +11,7 @@ import RegisterPage from "./pages/RegisterPage";
 import Home from "./pages/Home";
 import DashOrderForm from "./components/test/DashOrderForm";
 import DashOrderTable from "./components/test/DsahOrderTable";
+
 import { Dashboard } from "@mui/icons-material";
 import DashInventoryForm from "./components/inventoryHandling/DashInventoryForm";
 import DashInventoryTable from "./components/inventoryHandling/DashInventoryTable";
@@ -19,6 +20,12 @@ import DashCleaningTable from "./components/inventoryHandling/DashCleaningTable"
 import DashKitchenTable from "./components/inventoryHandling/DashKitchenTable";
 import DashRemoveInventoryForm from "./components/inventoryHandling/DashRemoveInventoryForm";
 import DashRemoveInventoryTable from "./components/inventoryHandling/DashRemoveInventoryTable";
+
+
+import DashShoppingForm from "./components/shoppingList/dashShoppingForm";
+import DashShoppingTable from "./components/shoppingList/dashShoppingTable";
+import DashUpdateForm from "./components/shoppingList/dashUpdateForm";
+import UpdateForm from "./components/shoppingList/updateForm";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -33,6 +40,7 @@ root.render(
         <Route path="/dashOrderForm" element={<DashOrderForm />} />
         <Route path="/dashOrderTable" element={<DashOrderTable />} />
 
+
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashinventoryform" element={<DashInventoryForm />} />
         <Route path="/dashinventorytable" element={<DashInventoryTable />} />
@@ -43,6 +51,12 @@ root.render(
         <Route path="/dashremoveinventorytable" element={<DashRemoveInventoryTable />} />
 
 
+
+        <Route path="/dashShoppingForm" element={<DashShoppingForm />} />
+        <Route path="/dashShoppingTable" element={<DashShoppingTable />} />
+        <Route path="/dashupdateform" element={<DashUpdateForm />} />
+        <Route path="/updateForm" element={<UpdateForm />} />
+           
       </Routes>
     </AuthProvider>
   </BrowserRouter>
