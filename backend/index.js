@@ -41,7 +41,8 @@ app.use("/test", testRouter);
 
 
 //tashini
-
+const shoppingRouter = require("./routes/shoppingList/rshopping.js");
+app.use("/rshopping", shoppingRouter);
 
 //Nishan
 
