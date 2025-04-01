@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import inventoryImg from '../../images/inventory.png';
 
 
 export default function InventoryForm() {
@@ -116,24 +117,40 @@ export default function InventoryForm() {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: "#f5f5f5",
-      }}
-      >
+    <div style={{
+      
+      position: "relative",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "120vh",
+      padding: "10px",
+      overflow: "hidden"
+    }}>
       <div style={{
-        backgroundColor: "rgba(255, 255, 255, 0.8)",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        backgroundImage: `url(${inventoryImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        filter: "brightness(0.3)", // this darkens the image
+        zIndex: 1
+      }} />
+    
+      
+      <div style={{
+        position: "relative",
+        backgroundColor: "rgba(252, 241, 241, 0.8)",
         padding: "20px 40px",
         borderRadius: "8px",
         boxShadow: "0 0 15px rgba(0, 0, 0, 0.3)",
         width: "100%",
         maxWidth: "450px",
-        border: "2px solid #3498db", 
-        
+        border: "2px solid rgb(231, 25, 25)", 
+        zIndex: 1,
       }}>
         <h2 style={{ textAlign: "center", marginBottom: "20px", color: "#3498db" }}>Inventory Form</h2>
         <form onSubmit={handleSubmit}>
@@ -304,5 +321,6 @@ export default function InventoryForm() {
         </button>
         </div>
       </div>
+    
   );
 }
