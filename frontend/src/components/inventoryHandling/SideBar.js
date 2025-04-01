@@ -33,7 +33,7 @@ const Sidebar = () => {
             padding: "20px 0",
             borderRadius: "5px",
             margin: "5px",
-            backgroundColor: isActive(["/app"]) ? "rgb(97, 96, 96)" : "inherit",
+            backgroundColor: isActive(["/app"]) ? "rgb(138, 94, 94)" : "inherit",
             // ✅ Active State Color
             "&:hover": { backgroundColor: "#475569" }, // ✅ Hover Effect
           }}
