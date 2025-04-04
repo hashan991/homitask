@@ -8,9 +8,15 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemIcon,
+  Divider,
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCartCheckout";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import PriceCheckIcon from "@mui/icons-material/PriceCheck";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const SavedLists = () => {
   const [lists, setLists] = useState([]);
@@ -20,13 +26,11 @@ const SavedLists = () => {
   useEffect(() => {
     const fetchListsAndMeals = async () => {
       try {
-        // Fetch all saved shopping lists
         const listRes = await axios.get(
           "http://localhost:8070/api/shopping-list/all"
         );
         setLists(listRes.data);
 
-        // Fetch all meals to map their prices
         const mealRes = await axios.get("http://localhost:8070/api/meals");
         const map = {};
         mealRes.data.forEach((meal) => {
@@ -41,7 +45,6 @@ const SavedLists = () => {
     fetchListsAndMeals();
   }, []);
 
-  // ✅ Helper to calculate total price of a list
   const calculateTotalPrice = (mealIds) => {
     if (!mealIds || !mealsMap) return 0;
     return mealIds.reduce((sum, id) => {
@@ -52,37 +55,57 @@ const SavedLists = () => {
 
   return (
     <Container maxWidth="sm" sx={{ pt: 5 }}>
-      <Typography variant="h5" fontWeight="bold" gutterBottom>
-        📚 Saved Shopping Lists
-      </Typography>
+      <Box display="flex" alignItems="center" gap={1} mb={3}>
+        <ShoppingCartIcon color="primary" fontSize="large" />
+        <Typography variant="h5" fontWeight="bold">
+          Saved Shopping Lists
+        </Typography>
+      </Box>
 
       {lists.length === 0 ? (
         <Typography>No saved lists found.</Typography>
       ) : (
         <List>
           {lists.map((list) => (
-            <Paper key={list._id} sx={{ mb: 2, p: 2 }}>
-              <ListItem
-                secondaryAction={
-                  <Button
-                    variant="outlined"
-                    onClick={() => navigate("/view-list", { state: { list } })}
-                  >
-                    View List
-                  </Button>
-                }
-              >
+            <Paper
+              key={list._id}
+              elevation={3}
+              sx={{ mb: 3, p: 3, borderRadius: 2, backgroundColor: "#f9f9f9" }}
+            >
+              <Box mb={1}>
+                <Typography variant="h6" fontWeight="bold">
+                  📝 {list.name}
+                </Typography>
+              </Box>
+              <Divider sx={{ mb: 1 }} />
+              <ListItem disableGutters>
+                <ListItemIcon>
+                  <CalendarMonthIcon color="action" />
+                </ListItemIcon>
                 <ListItemText
-                  primary={list.name}
-                  secondary={
-                    <>
-                      📅 {new Date(list.date).toLocaleDateString()} <br />
-                      💰 Total Meal Price: $
-                      {calculateTotalPrice(list.mealIds).toFixed(2)}
-                    </>
-                  }
+                  primary={`Date: ${new Date(list.date).toLocaleDateString()}`}
                 />
               </ListItem>
+              <ListItem disableGutters>
+                <ListItemIcon>
+                  <PriceCheckIcon color="success" />
+                </ListItemIcon>
+                <ListItemText
+                  primary={`Total Meal Price: $${calculateTotalPrice(
+                    list.mealIds
+                  ).toFixed(2)}`}
+                />
+              </ListItem>
+
+              <Box display="flex" justifyContent="flex-end" mt={2}>
+                <Button
+                  variant="contained"
+                  startIcon={<VisibilityIcon />}
+                  onClick={() => navigate("/view-list", { state: { list } })}
+                >
+                  View List
+                </Button>
+              </Box>
             </Paper>
           ))}
         </List>

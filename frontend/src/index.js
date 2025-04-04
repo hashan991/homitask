@@ -44,10 +44,10 @@ import DashShoppingForm from "./components/shoppingList/dashShoppingForm";
 import DashShoppingTable from "./components/shoppingList/dashShoppingTable";
 import DashUpdateForm from "./components/shoppingList/dashUpdateForm";
 import UpdateForm from "./components/shoppingList/updateForm";
-import ShoppingList from "./components/smartShopping/ShoppingList";
-import SaveListForm from "./components/smartShopping/SaveListForm";
-import SavedLists from "./components/smartShopping/SavedLists";
-import ViewList from "./components/smartShopping/ViewList";
+import DashShoppingList from "./components/smartShopping/DashShoppingList";
+import DashSavedListForm from "./components/smartShopping/DashSaveListForm";
+import DashSavedList from "./components/smartShopping/DashSavedList";
+import DashViewList from "./components/smartShopping/DashViewLIst";
 
 
 
@@ -79,10 +79,10 @@ root.render(
 
         <Route path="/dashMealForm" element={<DashMealForm />} />
         <Route path="/dashMealTable" element={<DashMealTable />} />
-        <Route path="/shopping-list" element={<ShoppingList />} />
-        <Route path="/save-list" element={<SaveListForm />} />
-        <Route path="/saved-lists" element={<SavedLists />} />
-        <Route path="/view-list" element={<ViewList />} />
+        <Route path="/shopping-list" element={<DashShoppingList />} />
+        <Route path="/save-list" element={<DashSavedListForm/>} />
+        <Route path="/saved-lists" element={<DashSavedList />} />
+        <Route path="/view-list" element={<DashViewList />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashinventoryform" element={<DashInventoryForm />} />
