@@ -14,22 +14,41 @@ import { useNavigate } from "react-router-dom";
 
 const SavedLists = () => {
   const [lists, setLists] = useState([]);
+  const [mealsMap, setMealsMap] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchLists = async () => {
+    const fetchListsAndMeals = async () => {
       try {
-        const res = await axios.get(
+        // Fetch all saved shopping lists
+        const listRes = await axios.get(
           "http://localhost:8070/api/shopping-list/all"
         );
-        setLists(res.data);
+        setLists(listRes.data);
+
+        // Fetch all meals to map their prices
+        const mealRes = await axios.get("http://localhost:8070/api/meals");
+        const map = {};
+        mealRes.data.forEach((meal) => {
+          map[meal._id] = meal;
+        });
+        setMealsMap(map);
       } catch (err) {
-        console.error("Error fetching saved lists", err);
+        console.error("Error fetching data:", err);
       }
     };
 
-    fetchLists();
+    fetchListsAndMeals();
   }, []);
+
+  // ✅ Helper to calculate total price of a list
+  const calculateTotalPrice = (mealIds) => {
+    if (!mealIds || !mealsMap) return 0;
+    return mealIds.reduce((sum, id) => {
+      const meal = mealsMap[id];
+      return sum + (meal?.price || 0);
+    }, 0);
+  };
 
   return (
     <Container maxWidth="sm" sx={{ pt: 5 }}>
@@ -55,7 +74,13 @@ const SavedLists = () => {
               >
                 <ListItemText
                   primary={list.name}
-                  secondary={`📅 ${new Date(list.date).toLocaleDateString()}`}
+                  secondary={
+                    <>
+                      📅 {new Date(list.date).toLocaleDateString()} <br />
+                      💰 Total Meal Price: $
+                      {calculateTotalPrice(list.mealIds).toFixed(2)}
+                    </>
+                  }
                 />
               </ListItem>
             </Paper>

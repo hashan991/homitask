@@ -18,28 +18,44 @@ const ShoppingList = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { mealIds } = location.state || {};
-  const [shoppingList, setShoppingList] = useState([]);
 
+  const [shoppingList, setShoppingList] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  // ✅ Fetch shopping list and meal prices
   useEffect(() => {
-    const fetchShoppingList = async () => {
+    const fetchShoppingData = async () => {
       if (!mealIds || mealIds.length === 0) return;
 
       try {
+        // 🥕 Get ingredients
         const res = await axios.post(
           "http://localhost:8070/api/shopping-list",
-          { mealIds }
+          {
+            mealIds,
+          }
         );
-        const combined = combineItems(res.data);
+        const combined = combineItems(res.data.shoppingList || res.data);
         setShoppingList(combined);
+
+        // 💰 Get all meals & calculate total price
+        const mealRes = await axios.get("http://localhost:8070/api/meals");
+        const allMeals = mealRes.data;
+        const selected = allMeals.filter((meal) => mealIds.includes(meal._id));
+        const total = selected.reduce(
+          (sum, meal) => sum + (meal.price || 0),
+          0
+        );
+        setTotalPrice(total);
       } catch (err) {
-        console.error("❌ Error fetching shopping list:", err);
+        console.error("❌ Error fetching shopping data:", err);
       }
     };
 
-    fetchShoppingList();
+    fetchShoppingData();
   }, [mealIds]);
 
-  // ✅ Combine items by name + unit
+  // ✅ Combine duplicate ingredients
   const combineItems = (items) => {
     const map = {};
     items.forEach((item) => {
@@ -59,12 +75,13 @@ const ShoppingList = () => {
     return Object.values(map);
   };
 
-  // ✅ Save button handler - navigate to save-list form
+  // ✅ Navigate to save form with list + total cost
   const handleSaveClick = () => {
     navigate("/save-list", {
       state: {
         mealIds,
         items: shoppingList,
+        totalCost: totalPrice,
       },
     });
   };
@@ -114,7 +131,16 @@ const ShoppingList = () => {
               ))}
             </List>
 
-            {/* ✅ Save Button */}
+            {/* 💰 Total Price */}
+            <Typography
+              variant="subtitle1"
+              fontWeight="bold"
+              sx={{ mt: 2, color: "#333" }}
+            >
+              💰 Total Meal Price: ${totalPrice.toFixed(2)}
+            </Typography>
+
+            {/* 💾 Save Button */}
             <Box display="flex" justifyContent="flex-end" mt={3}>
               <Button
                 variant="contained"
