@@ -15,8 +15,17 @@ const getMeals = async (req, res) => {
 // @route POST /api/meals
 const addMeal = async (req, res) => {
   try {
-    const { name, price, description, category, calories } = req.body;
-    const newMeal = new Meal({ name, price, description, category, calories });
+    const { name, price, description, category, calories, ingredients } =
+      req.body;
+
+    const newMeal = new Meal({
+      name,
+      price,
+      description,
+      category,
+      calories,
+      ingredients, // New field added
+    });
 
     await newMeal.save();
     res.status(201).json(newMeal);
@@ -31,7 +40,9 @@ const updateMeal = async (req, res) => {
   try {
     const updatedMeal = await Meal.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
+      runValidators: true,
     });
+
     res.status(200).json(updatedMeal);
   } catch (error) {
     res.status(400).json({ message: "Error updating meal", error });
@@ -49,4 +60,9 @@ const deleteMeal = async (req, res) => {
   }
 };
 
-module.exports = { getMeals, addMeal, updateMeal, deleteMeal };
+module.exports = {
+  getMeals,
+  addMeal,
+  updateMeal,
+  deleteMeal,
+};

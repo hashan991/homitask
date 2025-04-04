@@ -15,7 +15,7 @@ import { motion } from "framer-motion";
 import BudgetInput from "./BudgetInput";
 import MealCard from "./MealCard";
 import AnalyzingBudget from "./AnalyzingBudgetUi";
-
+import { useNavigate } from "react-router-dom"; // ✅ Added
 
 const BudgetPlanner = () => {
   const [budget, setBudget] = useState(50);
@@ -25,10 +25,24 @@ const BudgetPlanner = () => {
   const [remainingBudget, setRemainingBudget] = useState(0);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // ✅ Added
 
-  // ✅ Fetch Meals & Snacks After Setting Budget
+  // ✅ New helper to collect all meal/snack IDs
+  const getAllMealIds = () => {
+    const ids = [];
+    weeklyMealPlan.forEach((day) => {
+      day.meals.forEach((meal) => {
+        ids.push(meal._id);
+      });
+    });
+    snacks.forEach((snack) => {
+      ids.push(snack._id);
+    });
+    return ids;
+  };
+
   const fetchMealsByBudget = async () => {
-    setLoading(true); // ✅ Start loading
+    setLoading(true);
     try {
       const response = await fetch(
         "http://localhost:8070/api/budget/weekly-meal-plan",
@@ -58,14 +72,13 @@ const BudgetPlanner = () => {
       console.error("❌ Error fetching meal plan:", error);
       setError("Error fetching meal plan. Please try again.");
     }
-    setLoading(false); // ✅ Stop loading when done
+    setLoading(false);
   };
 
-  // ✅ Function to Set Budget & Fetch Meals
   const handleBudgetSubmit = async (newBudget) => {
     setBudget(newBudget);
     setError("");
-    setLoading(true); // ✅ Start loading when budget is submitted
+    setLoading(true);
 
     try {
       const budgetResponse = await fetch("http://localhost:8070/api/budget", {
@@ -101,11 +114,10 @@ const BudgetPlanner = () => {
           sx={{
             mb: 3,
             background:
-              "linear-gradient(to right,rgb(21, 29, 46),rgb(115, 120, 133))", // ✅ Smooth gradient mix
+              "linear-gradient(to right,rgb(21, 29, 46),rgb(115, 120, 133))",
             boxShadow: "0px 5px 15px rgba(106, 17, 203, 0.4)",
             color: "#fff",
             fontWeight: "bold",
-            
           }}
         >
           🍽️ Budget Meal Planner
@@ -117,7 +129,6 @@ const BudgetPlanner = () => {
 
         {error && <Alert severity="error">{error}</Alert>}
 
-        {/* ✅ Show "Analyzing Budget..." while Loading */}
         {loading ? (
           <Box
             sx={{
@@ -125,15 +136,14 @@ const BudgetPlanner = () => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              mt: 3, // ✅ Space below Budget Input
-              ml: -3, // ✅ Space to the right
+              mt: 3,
+              ml: -3,
             }}
           >
             <AnalyzingBudget />
           </Box>
         ) : (
           <>
-            {/* ✅ Glassmorphism Budget Summary (Moved Below Analyzing Message) */}
             <motion.div whileHover={{ scale: 1.02 }}>
               <Paper
                 elevation={4}
@@ -143,7 +153,7 @@ const BudgetPlanner = () => {
                   backdropFilter: "blur(10px)",
                   background: "rgba(255, 255, 255, 0.2)",
                   boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
-                  mt: 3, // Add margin top
+                  mt: 3,
                 }}
               >
                 <Typography variant="h6" fontWeight="bold">
@@ -159,7 +169,6 @@ const BudgetPlanner = () => {
               </Paper>
             </motion.div>
 
-            {/* ✅ Meals for Each Day */}
             {weeklyMealPlan.length === 0 ? (
               <Typography
                 variant="body1"
@@ -197,7 +206,6 @@ const BudgetPlanner = () => {
               ))
             )}
 
-            {/* ✅ Snacks Section */}
             {snacks.length > 0 && (
               <>
                 <Divider sx={{ my: 4 }} />
@@ -217,6 +225,33 @@ const BudgetPlanner = () => {
                   ))}
                 </Grid>
               </>
+            )}
+
+            {/* ✅ View Shopping List Button */}
+            {(weeklyMealPlan.length > 0 || snacks.length > 0) && (
+              <Box display="flex" justifyContent="center" mt={5}>
+                <motion.div whileHover={{ scale: 1.05 }}>
+                  <button
+                    onClick={() =>
+                      navigate("/shopping-list", {
+                        state: { mealIds: getAllMealIds() },
+                      })
+                    }
+                    style={{
+                      backgroundColor: "#1976d2",
+                      color: "#fff",
+                      padding: "12px 24px",
+                      borderRadius: "8px",
+                      border: "none",
+                      fontWeight: "bold",
+                      fontSize: "16px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    🛒 View Shopping List
+                  </button>
+                </motion.div>
+              </Box>
             )}
           </>
         )}

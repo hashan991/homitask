@@ -122,6 +122,29 @@ const Sidebar = () => {
               />
             </ListItem>
             <Divider sx={{ backgroundColor: "#FFFFFF" }} />
+
+            {/* 💰 view list*/}
+            <ListItem
+              button
+              sx={{
+                padding: "15px 20px",
+                border: "2px solid #475569",
+                borderRadius: "10px",
+                margin: "10px 0",
+                backgroundColor: isActive(["/saved-lists"])
+                  ? "rgb(0, 0, 0)"
+                  : "inherit",
+                "&:hover": { backgroundColor: "#475569" },
+              }}
+              onClick={() => handleNavigation("/saved-lists")}
+            >
+              <ListAltIcon sx={{ color: "#FFFFFF" }} />
+              <ListItemText
+                primary="view Shopping list"
+                sx={{ paddingLeft: "10px", color: "#FFFFFF" }}
+              />
+            </ListItem>
+            <Divider sx={{ backgroundColor: "#FFFFFF" }} />
           </>
         )}
       </List>
