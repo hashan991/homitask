@@ -8,6 +8,8 @@ import {
   Typography,
   Card,
   InputAdornment,
+  IconButton,
+  Grid,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import AddIcon from "@mui/icons-material/Add";
@@ -16,6 +18,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const MealForm = ({ onMealSubmit }) => {
   const [meal, setMeal] = useState({
@@ -24,10 +27,30 @@ const MealForm = ({ onMealSubmit }) => {
     price: "",
     calories: "",
     category: "Breakfast",
+    ingredients: [],
   });
 
   const handleChange = (e) => {
     setMeal({ ...meal, [e.target.name]: e.target.value });
+  };
+
+  const handleIngredientChange = (index, field, value) => {
+    const updated = [...meal.ingredients];
+    updated[index][field] = value;
+    setMeal({ ...meal, ingredients: updated });
+  };
+
+  const handleAddIngredient = () => {
+    setMeal({
+      ...meal,
+      ingredients: [...meal.ingredients, { name: "", quantity: "", unit: "" }],
+    });
+  };
+
+  const handleRemoveIngredient = (index) => {
+    const updated = [...meal.ingredients];
+    updated.splice(index, 1);
+    setMeal({ ...meal, ingredients: updated });
   };
 
   const handleSubmit = (e) => {
@@ -39,6 +62,7 @@ const MealForm = ({ onMealSubmit }) => {
       price: "",
       calories: "",
       category: "Breakfast",
+      ingredients: [],
     });
   };
 
@@ -50,32 +74,17 @@ const MealForm = ({ onMealSubmit }) => {
     >
       <Card
         elevation={8}
-        sx={{
-          p: 4,
-          borderRadius: "15px",
-          backdropFilter: "blur(10px)",
-          background: "rgba(255, 255, 255, 0.1)",
-          boxShadow: "0px 10px 30px rgba(0,0,0,0.3)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-          maxWidth: "600px",
-          mx: "auto",
-        }}
+        sx={{ p: 4, borderRadius: "15px", maxWidth: "700px", mx: "auto" }}
       >
-        {/* 🍽️ Form Title */}
         <Typography
           variant="h5"
           fontWeight="bold"
           textAlign="center"
-          sx={{
-            color: "rgba(251, 19, 19, 0.3)",
-            
-            mb: 3,
-          }}
+          sx={{ mb: 3 }}
         >
-          Add a New Recipes 🍕
+          Add a New Recipe 🍲
         </Typography>
 
-        {/* 📝 Meal Form */}
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -86,7 +95,6 @@ const MealForm = ({ onMealSubmit }) => {
             name="name"
             value={meal.name}
             onChange={handleChange}
-            variant="outlined"
             fullWidth
             required
             InputProps={{
@@ -97,14 +105,14 @@ const MealForm = ({ onMealSubmit }) => {
               ),
             }}
           />
+
           <TextField
-            label="Meal Description"
+            label="Description"
             name="description"
             value={meal.description}
             onChange={handleChange}
-            variant="outlined"
             multiline
-            rows={3}
+            rows={2}
             fullWidth
             required
             InputProps={{
@@ -115,13 +123,13 @@ const MealForm = ({ onMealSubmit }) => {
               ),
             }}
           />
+
           <TextField
             label="Price ($)"
             name="price"
             value={meal.price}
             onChange={handleChange}
             type="number"
-            variant="outlined"
             fullWidth
             required
             InputProps={{
@@ -132,13 +140,13 @@ const MealForm = ({ onMealSubmit }) => {
               ),
             }}
           />
+
           <TextField
             label="Calories"
             name="calories"
             value={meal.calories}
             onChange={handleChange}
             type="number"
-            variant="outlined"
             fullWidth
             required
             InputProps={{
@@ -149,62 +157,99 @@ const MealForm = ({ onMealSubmit }) => {
               ),
             }}
           />
+
           <Select
             name="category"
             value={meal.category}
             onChange={handleChange}
             fullWidth
-            variant="outlined"
-            sx={{
-              background: "#fff",
-              borderRadius: "8px",
-              fontWeight: "bold",
-            }}
+            sx={{ background: "#fff", borderRadius: "8px" }}
           >
-            <MenuItem value="Breakfast">
-              <FastfoodIcon sx={{ mr: 1 }} />
-              Breakfast
-            </MenuItem>
-            <MenuItem value="Lunch">
-              <FastfoodIcon sx={{ mr: 1 }} />
-              Lunch
-            </MenuItem>
-            <MenuItem value="Dinner">
-              <FastfoodIcon sx={{ mr: 1 }} />
-              Dinner
-            </MenuItem>
-            <MenuItem value="Snack">
-              <FastfoodIcon sx={{ mr: 1 }} />
-              Snack
-            </MenuItem>
+            {["Breakfast", "Lunch", "Dinner", "Snack"].map((cat) => (
+              <MenuItem key={cat} value={cat}>
+                <FastfoodIcon sx={{ mr: 1 }} />
+                {cat}
+              </MenuItem>
+            ))}
           </Select>
 
-          {/* ✨ Animated Add Meal Button */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
+          <Typography variant="h6" fontWeight="bold" mt={2}>
+            🧾 Ingredients
+          </Typography>
+
+          {meal.ingredients.map((ingredient, index) => (
+            <Grid container spacing={1} key={index}>
+              <Grid item xs={5}>
+                <TextField
+                  label="Name"
+                  value={ingredient.name}
+                  onChange={(e) =>
+                    handleIngredientChange(index, "name", e.target.value)
+                  }
+                  fullWidth
+                  required
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextField
+                  label="Quantity"
+                  type="number"
+                  value={ingredient.quantity}
+                  onChange={(e) =>
+                    handleIngredientChange(index, "quantity", e.target.value)
+                  }
+                  fullWidth
+                  required
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextField
+                  label="Unit"
+                  value={ingredient.unit}
+                  onChange={(e) =>
+                    handleIngredientChange(index, "unit", e.target.value)
+                  }
+                  fullWidth
+                  required
+                />
+              </Grid>
+              <Grid item xs={1}>
+                <IconButton
+                  onClick={() => handleRemoveIngredient(index)}
+                  color="error"
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
+          ))}
+
+          <Button
+            onClick={handleAddIngredient}
+            variant="outlined"
+            startIcon={<AddIcon />}
           >
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              startIcon={<AddIcon />}
-              sx={{
-                background: "linear-gradient(to right, #ff416c, #ff4b2b)",
-                boxShadow: "0px 5px 15px rgba(255, 65, 108, 0.4)",
-                color: "#fff",
-                fontWeight: "bold",
-                fontSize: "1rem",
-                py: 1.2,
-                borderRadius: "10px",
-                "&:hover": {
-                  background: "linear-gradient(to right, #ff4b2b, #ff416c)",
-                },
-              }}
-            >
-              Add Meal
-            </Button>
-          </motion.div>
+            Add Ingredient
+          </Button>
+
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            startIcon={<AddIcon />}
+            sx={{
+              mt: 2,
+              background: "linear-gradient(to right, #ff416c, #ff4b2b)",
+              color: "#fff",
+              fontWeight: "bold",
+              borderRadius: "10px",
+              "&:hover": {
+                background: "linear-gradient(to right, #ff4b2b, #ff416c)",
+              },
+            }}
+          >
+            Add Meal
+          </Button>
         </Box>
       </Card>
     </motion.div>
