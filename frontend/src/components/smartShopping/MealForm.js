@@ -55,6 +55,10 @@ const MealForm = ({ onMealSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const confirm = window.confirm("Do you want to add this meal?");
+    if (!confirm) return;
+
     onMealSubmit(meal);
     setMeal({
       name: "",

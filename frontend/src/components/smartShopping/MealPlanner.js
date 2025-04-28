@@ -50,6 +50,10 @@ const MealPlanner = () => {
   };
 
   const handleDeleteMeal = async (id) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this meal?"
+    );
+    if (!confirm) return;
     try {
       await axios.delete(`http://localhost:8070/api/meals/${id}`);
       setMeals(meals.filter((meal) => meal._id !== id));
@@ -75,6 +79,10 @@ const MealPlanner = () => {
   };
 
   const handleUpdateMeal = async () => {
+    const confirm = window.confirm(
+      "Do you want to save the changes to this meal?"
+    );
+    if (!confirm) return;
     try {
       const response = await axios.put(
         `http://localhost:8070/api/meals/${editMeal._id}`,

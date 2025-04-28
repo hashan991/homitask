@@ -48,6 +48,7 @@ import DashShoppingList from "./components/smartShopping/DashShoppingList";
 import DashSavedListForm from "./components/smartShopping/DashSaveListForm";
 import DashSavedList from "./components/smartShopping/DashSavedList";
 import DashViewList from "./components/smartShopping/DashViewLIst";
+import Dasheditshoopinglist from "./components/smartShopping/Dasheditshoopinglist";
 
 
 
@@ -80,9 +81,10 @@ root.render(
         <Route path="/dashMealForm" element={<DashMealForm />} />
         <Route path="/dashMealTable" element={<DashMealTable />} />
         <Route path="/shopping-list" element={<DashShoppingList />} />
-        <Route path="/save-list" element={<DashSavedListForm/>} />
+        <Route path="/save-list" element={<DashSavedListForm />} />
         <Route path="/saved-lists" element={<DashSavedList />} />
         <Route path="/view-list" element={<DashViewList />} />
+        <Route path="/edit-list/:id" element={<Dasheditshoopinglist/>} />
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashinventoryform" element={<DashInventoryForm />} />

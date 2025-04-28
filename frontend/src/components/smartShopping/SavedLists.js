@@ -10,6 +10,7 @@ import {
   ListItemText,
   ListItemIcon,
   Divider,
+  IconButton,
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +18,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCartCheckout";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const SavedLists = () => {
   const [lists, setLists] = useState([]);
@@ -53,6 +56,20 @@ const SavedLists = () => {
     }, 0);
   };
 
+  const handleDeleteList = async (id) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this list?"
+    );
+    if (!confirm) return;
+
+    try {
+      await axios.delete(`http://localhost:8070/api/shopping-list/${id}`);
+      setLists((prev) => prev.filter((list) => list._id !== id));
+    } catch (err) {
+      console.error("Failed to delete list:", err);
+    }
+  };
+
   return (
     <Container maxWidth="sm" sx={{ pt: 5 }}>
       <Box display="flex" alignItems="center" gap={1} mb={3}>
@@ -72,10 +89,26 @@ const SavedLists = () => {
               elevation={3}
               sx={{ mb: 3, p: 3, borderRadius: 2, backgroundColor: "#f9f9f9" }}
             >
-              <Box mb={1}>
+              <Box mb={1} display="flex" justifyContent="space-between">
                 <Typography variant="h6" fontWeight="bold">
                   📝 {list.name}
                 </Typography>
+                <Box>
+                  <IconButton
+                    color="primary"
+                    onClick={() =>
+                      navigate("/edit-list/:id", { state: { list } })
+                    }
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    color="error"
+                    onClick={() => handleDeleteList(list._id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
               </Box>
               <Divider sx={{ mb: 1 }} />
               <ListItem disableGutters>

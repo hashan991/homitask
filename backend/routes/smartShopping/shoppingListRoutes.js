@@ -44,7 +44,6 @@ router.post("/save", async (req, res) => {
   }
 });
 
-
 // @desc Get all saved shopping lists
 // @route GET /api/shopping-list/all
 router.get("/all", async (req, res) => {
@@ -56,5 +55,42 @@ router.get("/all", async (req, res) => {
   }
 });
 
+// @desc Update a shopping list
+// @route PUT /api/shopping-list/:id
+router.put("/:id", async (req, res) => {
+  try {
+    const { name, date, mealIds, items } = req.body;
+
+    const updatedList = await ShoppingList.findByIdAndUpdate(
+      req.params.id,
+      { name, date, mealIds, items },
+      { new: true }
+    );
+
+    if (!updatedList) {
+      return res.status(404).json({ message: "List not found" });
+    }
+
+    res.status(200).json(updatedList);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating list", error });
+  }
+});
+
+// @desc Delete a shopping list
+// @route DELETE /api/shopping-list/:id
+router.delete("/:id", async (req, res) => {
+  try {
+    const deleted = await ShoppingList.findByIdAndDelete(req.params.id);
+
+    if (!deleted) {
+      return res.status(404).json({ message: "List not found" });
+    }
+
+    res.status(200).json({ message: "List deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting list", error });
+  }
+});
 
 module.exports = router;
