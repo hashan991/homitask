@@ -22,7 +22,6 @@ const MealPlanner = () => {
   const [editMeal, setEditMeal] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  // 🔹 Fetch meals from the database when the page loads
   useEffect(() => {
     const fetchMeals = async () => {
       try {
@@ -38,7 +37,6 @@ const MealPlanner = () => {
     fetchMeals();
   }, []);
 
-  // 🔹 Add a new meal (POST request to backend)
   const handleMealSubmit = async (newMeal) => {
     try {
       const response = await axios.post(
@@ -51,8 +49,11 @@ const MealPlanner = () => {
     }
   };
 
-  // 🔹 Delete a meal (DELETE request to backend)
   const handleDeleteMeal = async (id) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this meal?"
+    );
+    if (!confirm) return;
     try {
       await axios.delete(`http://localhost:8070/api/meals/${id}`);
       setMeals(meals.filter((meal) => meal._id !== id));
@@ -61,20 +62,27 @@ const MealPlanner = () => {
     }
   };
 
-  // 🔹 Open Edit Dialog
   const handleOpenEditDialog = (meal) => {
     setEditMeal(meal);
     setOpenDialog(true);
   };
 
-  // 🔹 Close Edit Dialog
   const handleCloseEditDialog = () => {
     setEditMeal(null);
     setOpenDialog(false);
   };
 
-  // 🔹 Update Meal (PUT request to backend)
+  const handleIngredientChange = (index, key, value) => {
+    const updatedIngredients = [...editMeal.ingredients];
+    updatedIngredients[index][key] = value;
+    setEditMeal({ ...editMeal, ingredients: updatedIngredients });
+  };
+
   const handleUpdateMeal = async () => {
+    const confirm = window.confirm(
+      "Do you want to save the changes to this meal?"
+    );
+    if (!confirm) return;
     try {
       const response = await axios.put(
         `http://localhost:8070/api/meals/${editMeal._id}`,
@@ -102,7 +110,6 @@ const MealPlanner = () => {
         boxShadow: "0px 10px 30px rgba(0,0,0,0.2)",
       }}
     >
-      {/* 🌟 Title Section */}
       <Typography
         variant="h4"
         fontWeight="bold"
@@ -116,10 +123,8 @@ const MealPlanner = () => {
         🍽️New Recipes
       </Typography>
 
-      {/* 📜 Meal Form */}
       <MealForm onMealSubmit={handleMealSubmit} />
 
-      {/* 🍱 Meals List */}
       <Typography
         variant="h5"
         fontWeight="bold"
@@ -160,8 +165,12 @@ const MealPlanner = () => {
         </Grid>
       )}
 
-      {/* ✏️ Edit Meal Dialog */}
-      <Dialog open={openDialog} onClose={handleCloseEditDialog}>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseEditDialog}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>Edit Meal</DialogTitle>
         <DialogContent>
           <TextField
@@ -202,6 +211,40 @@ const MealPlanner = () => {
               setEditMeal({ ...editMeal, calories: e.target.value })
             }
           />
+
+          {/* Ingredient Editor */}
+          <Typography variant="subtitle1" fontWeight="bold" mt={2}>
+            Ingredients
+          </Typography>
+          {editMeal?.ingredients?.map((ingredient, index) => (
+            <Box key={index} display="flex" gap={1} mt={1}>
+              <TextField
+                label="Name"
+                value={ingredient.name}
+                onChange={(e) =>
+                  handleIngredientChange(index, "name", e.target.value)
+                }
+                fullWidth
+              />
+              <TextField
+                label="Qty"
+                type="number"
+                value={ingredient.quantity}
+                onChange={(e) =>
+                  handleIngredientChange(index, "quantity", e.target.value)
+                }
+                sx={{ width: "120px" }}
+              />
+              <TextField
+                label="Unit"
+                value={ingredient.unit}
+                onChange={(e) =>
+                  handleIngredientChange(index, "unit", e.target.value)
+                }
+                sx={{ width: "100px" }}
+              />
+            </Box>
+          ))}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseEditDialog} color="secondary">

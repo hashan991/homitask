@@ -10,7 +10,15 @@ const MealSchema = new mongoose.Schema(
       enum: ["Breakfast", "Lunch", "Dinner", "Snack"],
       required: true,
     },
-    calories: { type: Number, required: true }, // Only Calories
+    calories: { type: Number, required: true },
+
+    ingredients: [
+      {
+        name: { type: String, required: true, trim: true },
+        quantity: { type: Number, required: true, min: 0 },
+        unit: { type: String, required: true, trim: true }, // e.g., "g", "pcs"
+      },
+    ],
   },
   { timestamps: true }
 );

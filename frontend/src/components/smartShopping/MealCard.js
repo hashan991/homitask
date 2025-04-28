@@ -1,6 +1,18 @@
 import React from "react";
-import { Card, CardContent, Typography, Box, Button } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Button,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  Chip,
+} from "@mui/material";
 import { motion } from "framer-motion";
+import KitchenIcon from "@mui/icons-material/Kitchen";
 
 const MealCard = ({ meal, showActions = true, onEdit, onDelete }) => {
   return (
@@ -26,22 +38,19 @@ const MealCard = ({ meal, showActions = true, onEdit, onDelete }) => {
             {meal.description}
           </Typography>
 
-          <Typography
-            variant="body2"
-            fontWeight="bold"
+          <Chip
+            label={meal.category}
+            color="primary"
+            size="small"
             sx={{
-              color: "primary.main",
-              mb: 1,
-              bgcolor: "#e3f2fd",
-              px: 1.5,
-              py: 0.5,
-              borderRadius: 2,
-              display: "inline-block",
+              fontWeight: "bold",
+              mb: 1.5,
+              backgroundColor: "#e3f2fd",
+              color: "#1976d2",
             }}
-          >
-            {meal.category}
-          </Typography>
+          />
 
+          {/* 🍴 Calories & Price */}
           <Box
             sx={{
               display: "flex",
@@ -71,6 +80,41 @@ const MealCard = ({ meal, showActions = true, onEdit, onDelete }) => {
               💰 Price: ${meal.price}
             </Typography>
           </Box>
+
+          {/* 🧾 Ingredients */}
+          {meal.ingredients?.length > 0 && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <Box display="flex" alignItems="center" gap={1} mb={1}>
+                <KitchenIcon sx={{ color: "#6d4c41" }} />
+                <Typography variant="subtitle2" fontWeight="bold">
+                  Ingredients
+                </Typography>
+              </Box>
+
+              <List dense disablePadding>
+                {meal.ingredients.map((ing, index) => (
+                  <ListItem
+                    key={index}
+                    sx={{
+                      py: 0.5,
+                      px: 0,
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <ListItemText primary={ing.name} />
+                    <Chip
+                      label={`${ing.quantity} ${ing.unit}`}
+                      size="small"
+                      color="secondary"
+                      sx={{ fontWeight: "bold" }}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </>
+          )}
 
           {showActions && (
             <Box display="flex" justifyContent="space-between" mt={2}>

@@ -44,6 +44,11 @@ import DashShoppingForm from "./components/shoppingList/dashShoppingForm";
 import DashShoppingTable from "./components/shoppingList/dashShoppingTable";
 import DashUpdateForm from "./components/shoppingList/dashUpdateForm";
 import UpdateForm from "./components/shoppingList/updateForm";
+import DashShoppingList from "./components/smartShopping/DashShoppingList";
+import DashSavedListForm from "./components/smartShopping/DashSaveListForm";
+import DashSavedList from "./components/smartShopping/DashSavedList";
+import DashViewList from "./components/smartShopping/DashViewLIst";
+import Dasheditshoopinglist from "./components/smartShopping/Dasheditshoopinglist";
 
 
 
@@ -52,11 +57,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <AuthProvider>
-
       <MealProvider>
         <BudgetProvider>
           <Routes>
-           
             <Route path="/meal-planner" element={<MealPlanner />} />
             <Route path="/budget-planner" element={<BudgetPlanner />} />
             <Route path="/dashOrderForm" element={<DashOrderForm />} />
@@ -75,10 +78,13 @@ root.render(
         <Route path="/dashOrderForm" element={<DashOrderForm />} />
         <Route path="/dashOrderTable" element={<DashOrderTable />} />
 
-
         <Route path="/dashMealForm" element={<DashMealForm />} />
         <Route path="/dashMealTable" element={<DashMealTable />} />
-
+        <Route path="/shopping-list" element={<DashShoppingList />} />
+        <Route path="/save-list" element={<DashSavedListForm />} />
+        <Route path="/saved-lists" element={<DashSavedList />} />
+        <Route path="/view-list" element={<DashViewList />} />
+        <Route path="/edit-list/:id" element={<Dasheditshoopinglist/>} />
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashinventoryform" element={<DashInventoryForm />} />
@@ -86,19 +92,20 @@ root.render(
         <Route path="/dashgaragetable" element={<DashGarageTable />} />
         <Route path="/dashcleaningtable" element={<DashCleaningTable />} />
         <Route path="/dashkitchentable" element={<DashKitchenTable />} />
-        <Route path="/dashremoveinventoryform" element={<DashRemoveInventoryForm />} />
-        <Route path="/dashremoveinventorytable" element={<DashRemoveInventoryTable />} />
-
-
+        <Route
+          path="/dashremoveinventoryform"
+          element={<DashRemoveInventoryForm />}
+        />
+        <Route
+          path="/dashremoveinventorytable"
+          element={<DashRemoveInventoryTable />}
+        />
 
         <Route path="/dashShoppingForm" element={<DashShoppingForm />} />
         <Route path="/dashShoppingTable" element={<DashShoppingTable />} />
         <Route path="/dashupdateform" element={<DashUpdateForm />} />
         <Route path="/updateForm" element={<UpdateForm />} />
-           
-
       </Routes>
-
     </AuthProvider>
   </BrowserRouter>
 );

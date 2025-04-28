@@ -47,6 +47,9 @@ app.get("/", (req, res) => {
   res.send("Meal Planning API is running...");
 });
 
+//shopping
+const shoppingListRoutes = require("./routes/smartShopping/shoppingListRoutes");
+app.use("/api/shopping-list", shoppingListRoutes);
 
 
 
