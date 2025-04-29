@@ -27,6 +27,7 @@ import DashBudgetPlanner from "./components/smartShopping/DashBudgetPlanner";
 
 import DashMealForm from "./components/mealPlaning/DashMealForm";
 import DashMealTable from "./components/mealPlaning/DashMealTable";
+import DashReports from "./components/mealPlaning/dashreports";
 
 
 
@@ -83,11 +84,16 @@ root.render(
 
         <Route path="/dashMealForm" element={<DashMealForm />} />
         <Route path="/dashMealTable" element={<DashMealTable />} />
+
+        <Route path="/DashReports" element={<DashReports />} />
+
+
         <Route path="/shopping-list" element={<DashShoppingList />} />
         <Route path="/save-list" element={<DashSavedListForm />} />
         <Route path="/saved-lists" element={<DashSavedList />} />
         <Route path="/view-list" element={<DashViewList />} />
         <Route path="/edit-list/:id" element={<Dasheditshoopinglist />} />
+
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashinventoryform" element={<DashInventoryForm />} />
