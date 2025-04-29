@@ -51,6 +51,10 @@ app.get("/", (req, res) => {
 const shoppingListRoutes = require("./routes/smartShopping/shoppingListRoutes");
 app.use("/api/shopping-list", shoppingListRoutes);
 
+//repoart
+const reportRoutes = require("./routes/smartShopping/reportRoutes");
+app.use("/api/report", reportRoutes);
+
 
 
 

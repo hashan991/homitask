@@ -58,12 +58,10 @@ const Sidebar = () => {
             border: "2px solid #475569",
             borderRadius: "10px",
             margin: "10px 0",
-            backgroundColor: isActive(["/dashreports"])
-              ? "rgb(0, 0, 0)"
-              : "inherit",
+            backgroundColor: isActive(["/report"]) ? "rgb(0, 0, 0)" : "inherit",
             "&:hover": { backgroundColor: "#475569" },
           }}
-          onClick={() => handleNavigation("/dashreports")}
+          onClick={() => handleNavigation("/report")}
         >
           <AssessmentIcon sx={{ color: "#FFFFFF" }} />
           <ListItemText

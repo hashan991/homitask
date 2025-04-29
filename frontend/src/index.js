@@ -49,6 +49,8 @@ import DashSavedListForm from "./components/smartShopping/DashSaveListForm";
 import DashSavedList from "./components/smartShopping/DashSavedList";
 import DashViewList from "./components/smartShopping/DashViewLIst";
 import Dasheditshoopinglist from "./components/smartShopping/Dasheditshoopinglist";
+import ReportPage from "./pages/ReportPage";
+import DashReportPage from "./components/smartShopping/DashReportPage";
 
 
 
@@ -84,7 +86,7 @@ root.render(
         <Route path="/save-list" element={<DashSavedListForm />} />
         <Route path="/saved-lists" element={<DashSavedList />} />
         <Route path="/view-list" element={<DashViewList />} />
-        <Route path="/edit-list/:id" element={<Dasheditshoopinglist/>} />
+        <Route path="/edit-list/:id" element={<Dasheditshoopinglist />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashinventoryform" element={<DashInventoryForm />} />
@@ -105,6 +107,7 @@ root.render(
         <Route path="/dashShoppingTable" element={<DashShoppingTable />} />
         <Route path="/dashupdateform" element={<DashUpdateForm />} />
         <Route path="/updateForm" element={<UpdateForm />} />
+        <Route path="/report" element={<DashReportPage />} />
       </Routes>
     </AuthProvider>
   </BrowserRouter>
