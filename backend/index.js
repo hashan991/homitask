@@ -65,6 +65,10 @@ const removeInventoryRoutes = require("./routes/inventoryHandling/removeInventor
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/removeinventory", removeInventoryRoutes); // Remove inventory routes
 
+const inventoryReportRoutes = require("./routes/inventoryHandling/reportRoutes.js");
+app.use("/api/inventory/report", inventoryReportRoutes);
+
+
 
 //tashini
 const shoppingRouter = require("./routes/shoppingList/rshopping.js");
