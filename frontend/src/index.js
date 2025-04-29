@@ -15,6 +15,7 @@ import DashOrderTable from "./components/test/DsahOrderTable";
 
 import DashMealForm from "./components/mealPlaning/DashMealForm";
 import DashMealTable from "./components/mealPlaning/DashMealTable";
+import DashReports from "./components/mealPlaning/dashreports";
 
 
 
@@ -50,6 +51,7 @@ root.render(
 
         <Route path="/dashMealForm" element={<DashMealForm />} />
         <Route path="/dashMealTable" element={<DashMealTable />} />
+        <Route path="/DashReports" element={<DashReports />} />
 
 
         <Route path="/dashboard" element={<Dashboard />} />
