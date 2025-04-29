@@ -52,6 +52,7 @@ import DashViewList from "./components/smartShopping/DashViewLIst";
 import Dasheditshoopinglist from "./components/smartShopping/Dasheditshoopinglist";
 import ReportPage from "./pages/ReportPage";
 import DashReportPage from "./components/smartShopping/DashReportPage";
+import DashInventoryReport from "./components/inventoryHandling/DashInventoryReport";
 
 
 
@@ -114,6 +115,8 @@ root.render(
         <Route path="/dashupdateform" element={<DashUpdateForm />} />
         <Route path="/updateForm" element={<UpdateForm />} />
         <Route path="/report" element={<DashReportPage />} />
+        <Route path="/inventory-report" element={<DashInventoryReport />} />
+
       </Routes>
     </AuthProvider>
   </BrowserRouter>
