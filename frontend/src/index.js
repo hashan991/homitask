@@ -3,14 +3,26 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import StartupPage from "./pages/StartupPage";
 
+// Import Context Providers
 import { AuthProvider } from "./context/AuthContext";
+import { MealProvider } from "./context/MealContext";
+import { BudgetProvider } from "./context/BudgetContext";
+
+// Import Pages
+import StartupPage from "./pages/StartupPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Home from "./pages/Home";
+
+
+// Import Components
 import DashOrderForm from "./components/test/DashOrderForm";
 import DashOrderTable from "./components/test/DsahOrderTable";
+import MealPlanner from "./components/smartShopping/MealPlanner";
+import BudgetPlanner from "./components/smartShopping/BudgetPlanner";
+import DashMealPlanner from "./components/smartShopping/DsahMealPlanner";
+import DashBudgetPlanner from "./components/smartShopping/DashBudgetPlanner";
 
 
 import DashMealForm from "./components/mealPlaning/DashMealForm";
@@ -33,13 +45,34 @@ import DashShoppingForm from "./components/shoppingList/dashShoppingForm";
 import DashShoppingTable from "./components/shoppingList/dashShoppingTable";
 import DashUpdateForm from "./components/shoppingList/dashUpdateForm";
 import UpdateForm from "./components/shoppingList/updateForm";
+import DashShoppingList from "./components/smartShopping/DashShoppingList";
+import DashSavedListForm from "./components/smartShopping/DashSaveListForm";
+import DashSavedList from "./components/smartShopping/DashSavedList";
+import DashViewList from "./components/smartShopping/DashViewLIst";
+import Dasheditshoopinglist from "./components/smartShopping/Dasheditshoopinglist";
+import ReportPage from "./pages/ReportPage";
+import DashReportPage from "./components/smartShopping/DashReportPage";
 
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <BrowserRouter>
     <AuthProvider>
+      <MealProvider>
+        <BudgetProvider>
+          <Routes>
+            <Route path="/meal-planner" element={<MealPlanner />} />
+            <Route path="/budget-planner" element={<BudgetPlanner />} />
+            <Route path="/dashOrderForm" element={<DashOrderForm />} />
+            <Route path="/dashOrderTable" element={<DashOrderTable />} />
+            <Route path="/dashmealplanner" element={<DashMealPlanner />} />
+            <Route path="/dashbudgetplanner" element={<DashBudgetPlanner />} />
+          </Routes>
+        </BudgetProvider>
+      </MealProvider>
+
       <Routes>
         <Route path="/" element={<StartupPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -48,10 +81,17 @@ root.render(
         <Route path="/dashOrderForm" element={<DashOrderForm />} />
         <Route path="/dashOrderTable" element={<DashOrderTable />} />
 
-
         <Route path="/dashMealForm" element={<DashMealForm />} />
         <Route path="/dashMealTable" element={<DashMealTable />} />
+
         <Route path="/DashReports" element={<DashReports />} />
+
+
+        <Route path="/shopping-list" element={<DashShoppingList />} />
+        <Route path="/save-list" element={<DashSavedListForm />} />
+        <Route path="/saved-lists" element={<DashSavedList />} />
+        <Route path="/view-list" element={<DashViewList />} />
+        <Route path="/edit-list/:id" element={<Dasheditshoopinglist />} />
 
 
         <Route path="/dashboard" element={<Dashboard />} />
@@ -60,23 +100,23 @@ root.render(
         <Route path="/dashgaragetable" element={<DashGarageTable />} />
         <Route path="/dashcleaningtable" element={<DashCleaningTable />} />
         <Route path="/dashkitchentable" element={<DashKitchenTable />} />
-        <Route path="/dashremoveinventoryform" element={<DashRemoveInventoryForm />} />
-        <Route path="/dashremoveinventorytable" element={<DashRemoveInventoryTable />} />
-
-
+        <Route
+          path="/dashremoveinventoryform"
+          element={<DashRemoveInventoryForm />}
+        />
+        <Route
+          path="/dashremoveinventorytable"
+          element={<DashRemoveInventoryTable />}
+        />
 
         <Route path="/dashShoppingForm" element={<DashShoppingForm />} />
         <Route path="/dashShoppingTable" element={<DashShoppingTable />} />
         <Route path="/dashupdateform" element={<DashUpdateForm />} />
         <Route path="/updateForm" element={<UpdateForm />} />
-           
-
+        <Route path="/report" element={<DashReportPage />} />
       </Routes>
     </AuthProvider>
   </BrowserRouter>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

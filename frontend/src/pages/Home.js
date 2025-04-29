@@ -66,33 +66,59 @@ const Home = () => {
       <UNavbar />
       <Box sx={{ display: "flex", flex: 1 }}>
         <Sidebar2 />
-        <Box component="main" sx={{ flex: 1, padding: 2 }}>
+        <Box component="main" sx={{ flex: 1, padding: 0 }}>
           <Main />
         </Box>
       </Box>
 
       {/* Products Section 
-      <Box py={5} id="products">
-        <Typography variant="h4"  align="center" gutterBottom>PRODUCTS</Typography>
-        <Grid container spacing={3} justifyContent="center">
-          {products.map((product) => (
-            <Grid item key={product.id} xs={12} sm={6} md={4} lg={2}>
-              <Card sx={{ maxWidth: 345, textAlign: 'center', boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)' }}>
-                <CardMedia component="img" alt={product.name} height="200" image={product.image} />
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>{product.name}</Typography>
-                  {product.description && (
-                    <Typography variant="body2" color="textSecondary">{product.description}</Typography>
-                  )}
-                  <Typography variant="h6" color="primary">{product.price}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+     <Box py={6} id="features" sx={{ backgroundColor: "#f0f4f8" }}>
+  <Typography
+    variant="h4"
+    align="center"
+    fontWeight="bold"
+    sx={{ mb: 4, color: "#1E293B" }}
+  >
+    🏡 Smart Home Features
+  </Typography>
 
-      */}
+  <Grid container spacing={4} justifyContent="center">
+    {modules.map((module) => (
+      <Grid item key={module.id} xs={12} sm={6} md={4}>
+        <Card
+          sx={{
+            p: 3,
+            borderRadius: 3,
+            textAlign: "center",
+            background: "#ffffff",
+            boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.08)",
+            transition: "transform 0.3s ease",
+            "&:hover": {
+              transform: "translateY(-8px)",
+              boxShadow: "0 12px 30px rgba(0, 0, 0, 0.12)",
+            },
+          }}
+        >
+          <Box
+            component="img"
+            src={module.icon}
+            alt={module.name}
+            sx={{ height: 60, mb: 2 }}
+          />
+          <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
+            {module.name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {module.description}
+          </Typography>
+        </Card>
+      </Grid>
+    ))}
+  </Grid>
+</Box>
+
+
+     
 
       {/* Contact Us Section */}
       <Box py={5} px={3} bgcolor="#f9f9f9" id="contact-us">
@@ -192,7 +218,7 @@ const Home = () => {
               household organization.{" "}
             </Typography>
             <Typography variant="body1" color="textSecondary" mt={2}>
-               Our platform simplifies wishlist tracking, shopping list
+              Our platform simplifies wishlist tracking, shopping list
               management, meal planning, and inventory monitoring, ensuring that
               every task is handled effortlessly. With a focus on automation,
               smart notifications, and AI-driven insights, we are committed to

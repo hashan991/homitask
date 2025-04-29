@@ -1,30 +1,35 @@
 import React from "react";
 import { Box, Grid } from "@mui/material";
 
-import InventoryForm from "./InventoryForm";
+
 import Sidebar from "./SideBar";
 import Navbar from "./NavBar";
+import MealPlanner from "./MealPlanner";
 
-const DashInventoryForm = () => {
+
+
+
+const DashMealPlanner = () => {
     return (
         <Grid container>
             <Grid item>
-                <Sidebar />
+                <Sidebar/>
             </Grid>
             <Grid item xs>
-                <Navbar />
+                <Navbar/>
                 <Box 
                     sx={{ 
-                        padding: "0px", 
+                        padding: "20px", 
                         backgroundColor: "#e0e0e0", 
                         minHeight: "100vh" 
                     }}
                 >
-                    <InventoryForm />
+                    <MealPlanner/>
                 </Box>
             </Grid>
         </Grid>
     );
 };
 
-export default DashInventoryForm;
+// Ensure the export statement matches the component name
+export default DashMealPlanner;

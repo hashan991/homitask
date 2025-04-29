@@ -108,14 +108,14 @@ const Sidebar2 = () => {
           user?.email === "homitask@gmail.com") && (
           <StyledListItem button onClick={() => navigate("/dashMealForm")}>
             <ListItemIcon sx={{ color: "#fff" }}>
-              <LocalShippingIcon />
+              <InventoryIcon />
             </ListItemIcon>
             <ListItemText primary="meal planing" />
           </StyledListItem>
         )}
         {(user?.email === "hashan@email.com" ||
           user?.email === "homitask@gmail.com") && (
-          <StyledListItem button onClick={() => navigate("/dashOrderreport")}>
+          <StyledListItem button onClick={() => navigate("/dashbudgetplanner")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <BuildIcon />
             </ListItemIcon>
@@ -123,7 +123,7 @@ const Sidebar2 = () => {
           </StyledListItem>
         )}
         {(user?.email === "hashan@email.com" ||
-          user?.email === "homitask@gmail.com") && (
+          user?.email === "homitask2@gmail.com") && (
           <StyledListItem button onClick={() => navigate("/dashOrderForm")}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <BuildIcon />

@@ -12,7 +12,7 @@ import {
 import { styled } from "@mui/system";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import LoginForm from "../components/login/LoginForm";
-import back6 from "../images/back6.jpg";
+import back6 from "../images/back10.png";
 
 // Styled components for layout
 const RootContainer = styled(Box)({

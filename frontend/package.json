@@ -6,7 +6,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.8",
-    "@mui/material": "^6.4.8",
+    "@mui/material": "^6.4.11",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
@@ -14,14 +14,22 @@
     "ajv": "^6.12.6",
     "ajv-keywords": "^3.5.2",
     "axios": "^1.8.3",
+
     "html2pdf.js": "^0.10.3",
     "jspdf": "^3.0.1",
     "jspdf-autotable": "^5.0.2",
+
+    "framer-motion": "^12.5.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
+
     "mui": "^0.0.1",
     "react": "^19.0.0",
+    "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.3.0",
     "react-scripts": "5.0.1",
+    "recharts": "^2.15.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

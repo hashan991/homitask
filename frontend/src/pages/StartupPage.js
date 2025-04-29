@@ -10,7 +10,7 @@ import { keyframes } from '@mui/system';
 import backgroundImage1 from '../images/back5.jpg';
 import backgroundImage2 from '../images/back6.jpg';
 import backgroundImage3 from '../images/back8.jpg';
-import logo from '../images/logo.png';
+import logo from '../images/homi.png';
 
 import img1 from '../images/inventory_rubber_mats.jpeg';
 import img2 from '../images/gym_rubber_flooring.jpeg';
@@ -208,6 +208,7 @@ const StartupPage = () => {
             <Box
               sx={{ display: "flex", justifyContent: "center", flexGrow: 1 }}
             >
+              {/* Navigation Buttons 
               <Button
                 href="#products"
                 sx={{
@@ -226,7 +227,7 @@ const StartupPage = () => {
                 }}
               >
                 Products
-              </Button>
+              </Button> */}
               <Button
                 href="#about-us"
                 sx={{
@@ -339,7 +340,7 @@ const StartupPage = () => {
           backgroundImage: `url(${backgroundImages[currentImageIndex]})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          height: "65vh",
+          height: "75vh",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -476,17 +477,17 @@ const StartupPage = () => {
               ABOUT US
             </Typography>
             <Typography variant="body1" color="textSecondary">
-              HomiTask At HomiTask, we specialize in providing an
-              intelligent and efficient home task management solution designed
-              to streamline household organization. Our platform simplifies
-              wishlist tracking, shopping list management, meal planning, and
-              inventory monitoring, ensuring that every task is handled
-              effortlessly. With a focus on automation, smart notifications, and
-              AI-driven insights, we are committed to enhancing productivity,
-              reducing stress, and bringing convenience to everyday home
-              management. Our dedicated team ensures that every feature is
-              optimized for ease of use, performance, and reliability, making
-              HomiTask the perfect assistant for modern households.
+              HomiTask At HomiTask, we specialize in providing an intelligent
+              and efficient home task management solution designed to streamline
+              household organization. Our platform simplifies wishlist tracking,
+              shopping list management, meal planning, and inventory monitoring,
+              ensuring that every task is handled effortlessly. With a focus on
+              automation, smart notifications, and AI-driven insights, we are
+              committed to enhancing productivity, reducing stress, and bringing
+              convenience to everyday home management. Our dedicated team
+              ensures that every feature is optimized for ease of use,
+              performance, and reliability, making HomiTask the perfect
+              assistant for modern households.
             </Typography>
           </Grid>
         </Grid>

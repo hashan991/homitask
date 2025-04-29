@@ -87,7 +87,7 @@ export default function CleaningTable() {
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow sx={{ backgroundColor: '#3498DB' }}>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Item Name</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Item Name.</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Remaining Quantity</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Category</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Quantity Type</TableCell>
