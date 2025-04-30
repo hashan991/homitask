@@ -15,7 +15,6 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Home from "./pages/Home";
 
-
 // Import Components
 import DashOrderForm from "./components/test/DashOrderForm";
 import DashOrderTable from "./components/test/DsahOrderTable";
@@ -24,12 +23,9 @@ import BudgetPlanner from "./components/smartShopping/BudgetPlanner";
 import DashMealPlanner from "./components/smartShopping/DsahMealPlanner";
 import DashBudgetPlanner from "./components/smartShopping/DashBudgetPlanner";
 
-
 import DashMealForm from "./components/mealPlaning/DashMealForm";
 import DashMealTable from "./components/mealPlaning/DashMealTable";
 import DashReports from "./components/mealPlaning/dashreports";
-
-
 
 import { Dashboard } from "@mui/icons-material";
 import DashInventoryForm from "./components/inventoryHandling/DashInventoryForm";
@@ -40,7 +36,6 @@ import DashKitchenTable from "./components/inventoryHandling/DashKitchenTable";
 import DashRemoveInventoryForm from "./components/inventoryHandling/DashRemoveInventoryForm";
 import DashRemoveInventoryTable from "./components/inventoryHandling/DashRemoveInventoryTable";
 
-
 import DashShoppingForm from "./components/shoppingList/dashShoppingForm";
 import DashShoppingTable from "./components/shoppingList/dashShoppingTable";
 import DashUpdateForm from "./components/shoppingList/dashUpdateForm";
@@ -50,11 +45,9 @@ import DashSavedListForm from "./components/smartShopping/DashSaveListForm";
 import DashSavedList from "./components/smartShopping/DashSavedList";
 import DashViewList from "./components/smartShopping/DashViewLIst";
 import Dasheditshoopinglist from "./components/smartShopping/Dasheditshoopinglist";
-import ReportPage from "./pages/ReportPage";
+import ReportPage from "./components/smartShopping/ReportPage";
 import DashReportPage from "./components/smartShopping/DashReportPage";
 import DashInventoryReport from "./components/inventoryHandling/DashInventoryReport";
-
-
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -87,13 +80,11 @@ root.render(
 
         <Route path="/DashReports" element={<DashReports />} />
 
-
         <Route path="/shopping-list" element={<DashShoppingList />} />
         <Route path="/save-list" element={<DashSavedListForm />} />
         <Route path="/saved-lists" element={<DashSavedList />} />
         <Route path="/view-list" element={<DashViewList />} />
         <Route path="/edit-list/:id" element={<Dasheditshoopinglist />} />
-
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashinventoryform" element={<DashInventoryForm />} />
@@ -116,7 +107,6 @@ root.render(
         <Route path="/updateForm" element={<UpdateForm />} />
         <Route path="/report" element={<DashReportPage />} />
         <Route path="/inventory-report" element={<DashInventoryReport />} />
-
       </Routes>
     </AuthProvider>
   </BrowserRouter>

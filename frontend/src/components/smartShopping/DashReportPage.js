@@ -4,7 +4,7 @@ import { Box, Grid } from "@mui/material";
 import Sidebar from "./SideBar";
 import Navbar from "./NavBar";
 import EditShoppingList from "./EditShoppingList";
-import ReportPage from "../../pages/ReportPage";
+import ReportPage from "./ReportPage";
 
 const DashReportPage = () => {
   return (

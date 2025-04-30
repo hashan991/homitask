@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { fetchReport } from "../services/reportApi";
+import { fetchReport } from "../../services/reportApi";
 import {
   Box,
   Typography,
@@ -39,22 +39,46 @@ const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
 function ReportPage() {
   const [report, setReport] = useState(null);
 
- const handleDownloadPDF = () => {
-   const input = document.getElementById("reportContent");
-   html2canvas(input, { scale: 2 }).then((canvas) => {
-     const imgData = canvas.toDataURL("image/png");
-     const pdf = new jsPDF("p", "mm", "a4");
-     const imgProps = pdf.getImageProperties(imgData);
-     const pdfWidth = pdf.internal.pageSize.getWidth();
-     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-     pdf.save("meal-planning-report.pdf");
-   });
- };
+  const handleDownloadPDF = () => {
+    const input = document.getElementById("reportContent");
 
+    // Hide the download button before rendering
+    const button = document.querySelector(".no-print");
+    if (button) button.style.display = "none";
 
+    html2canvas(input, {
+      scrollY: -window.scrollY,
+      scale: 2,
+      useCORS: true,
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
 
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
 
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
+      }
+
+      pdf.save("report.pdf");
+
+      // Restore button visibility
+      if (button) button.style.display = "flex";
+    });
+  };
 
   useEffect(() => {
     const loadReport = async () => {
@@ -99,9 +123,47 @@ function ReportPage() {
 
   return (
     <Box id="reportContent" sx={{ padding: 4 }}>
-      <Typography variant="h3" gutterBottom align="center" fontWeight="bold">
-        📋 AI Meal Planning Report
-      </Typography>
+      {/* Header Section with Logo and Company Info */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          backgroundColor: "#dbe1e8",
+          padding: 3,
+          borderRadius: 2,
+          mb: 4,
+        }}
+      >
+        {/* Logo */}
+        <Box sx={{ mr: 3 }}>
+          <img
+            src="/logo.png" // replace with your actual path
+            alt="PRI Rubber Logo"
+            style={{ width: 100, height: 100, borderRadius: "8px" }}
+          />
+        </Box>
+
+        {/* Company Info */}
+        <Box>
+          <Typography
+            variant="h3"
+            gutterBottom
+            align="center"
+            fontWeight="bold"
+          >
+            📋 AI Meal Planning Report
+          </Typography>
+
+          <Typography variant="body1" sx={{ mt: 1 }}>
+            This report provides a performance summary of the HomiTask system's
+            meal planning module. It highlights key aspects such as user-defined
+            budget allocation, meal cost analysis, and automated shopping list
+            generation. The report offers insights into budget utilization,
+            average meal costs, and ingredient management, helping users plan
+            meals efficiently while staying within their financial limits.
+          </Typography>
+        </Box>
+      </Box>
 
       {/* Budget Summary */}
       <Grid container spacing={3} sx={{ mb: 5 }}>
@@ -413,11 +475,7 @@ function ReportPage() {
                         variant="outlined"
                       />
                     ))}
-
-                    
-            </Box>
-
-                 
+                  </Box>
 
                   {/* 🏋️ Top 5 Heaviest Ingredients */}
                   <Typography variant="subtitle1" sx={{ mt: 3, mb: 1 }}>
@@ -508,8 +566,10 @@ function ReportPage() {
         </Grid>
       </Box>
 
-      {/* Download Button */}
-      <Box sx={{ display: "flex", justifyContent: "flex-end", padding: 2 }}>
+      <Box
+        className="no-print"
+        sx={{ display: "flex", justifyContent: "flex-end", padding: 2 }}
+      >
         <Button
           onClick={handleDownloadPDF}
           variant="contained"
