@@ -219,14 +219,14 @@ const BudgetPlanner = () => {
                   }}
                 >
                   <Typography variant="h6" fontWeight="bold">
-                    💰 Total Cost: ${totalCost}
+                    💰 Total Cost: Rs. {totalCost}
                   </Typography>
                   <Typography
                     variant="h6"
                     fontWeight="bold"
                     sx={{ color: "green" }}
                   >
-                    🏦 Remaining Budget: ${remainingBudget}
+                    🏦 Remaining Budget: Rs. {remainingBudget}
                   </Typography>
                 </Paper>
               </motion.div>

@@ -112,7 +112,7 @@ const ViewList = () => {
               fontWeight="bold"
               sx={{ color: "#2e7d32" }}
             >
-              Total Meal Price: ${totalPrice.toFixed(2)}
+              Total Meal Price: Rs.{totalPrice.toFixed(2)}
             </Typography>
           </Box>
         </Paper>

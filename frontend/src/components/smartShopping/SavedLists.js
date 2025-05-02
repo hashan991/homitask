@@ -239,7 +239,7 @@ const SavedLists = () => {
                       <PriceCheckIcon color="success" />
                     </ListItemIcon>
                     <ListItemText
-                      primary={`Total Price: $${calculateTotalPrice(
+                      primary={`Total Price: Rs.${calculateTotalPrice(
                         list.mealIds
                       ).toFixed(2)}`}
                       primaryTypographyProps={{ fontSize: 16 }}

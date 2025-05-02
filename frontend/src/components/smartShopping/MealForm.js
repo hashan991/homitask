@@ -129,7 +129,7 @@ const MealForm = ({ onMealSubmit }) => {
           />
 
           <TextField
-            label="Price ($)"
+            label="Price (Rs.)"
             name="price"
             value={meal.price}
             onChange={handleChange}
