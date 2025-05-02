@@ -53,22 +53,31 @@ const MealForm = ({ onMealSubmit }) => {
     setMeal({ ...meal, ingredients: updated });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = (e) => {
+   e.preventDefault();
 
-    const confirm = window.confirm("Do you want to add this meal?");
-    if (!confirm) return;
+   const pricePattern = /^\d+(\.\d{1,2})?$/;
+   if (!pricePattern.test(meal.price)) {
+     alert(
+       "Please enter a valid price with up to two decimal places (e.g., 22.34)"
+     );
+     return;
+   }
 
-    onMealSubmit(meal);
-    setMeal({
-      name: "",
-      description: "",
-      price: "",
-      calories: "",
-      category: "Breakfast",
-      ingredients: [],
-    });
-  };
+   const confirm = window.confirm("Do you want to add this meal?");
+   if (!confirm) return;
+
+   onMealSubmit(meal);
+   setMeal({
+     name: "",
+     description: "",
+     price: "",
+     calories: "",
+     category: "Breakfast",
+     ingredients: [],
+   });
+ };
+
 
   return (
     <motion.div
@@ -132,8 +141,12 @@ const MealForm = ({ onMealSubmit }) => {
             label="Price (Rs.)"
             name="price"
             value={meal.price}
-            onChange={handleChange}
-            type="number"
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "" || /^\d+(\.\d{0,2})?$/.test(val)) {
+                setMeal({ ...meal, price: val });
+              }
+            }}
             fullWidth
             required
             InputProps={{
@@ -149,8 +162,12 @@ const MealForm = ({ onMealSubmit }) => {
             label="Calories"
             name="calories"
             value={meal.calories}
-            onChange={handleChange}
-            type="number"
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "" || /^[0-9\b]+$/.test(val)) {
+                setMeal({ ...meal, calories: val });
+              }
+            }}
             fullWidth
             required
             InputProps={{
@@ -183,6 +200,7 @@ const MealForm = ({ onMealSubmit }) => {
 
           {meal.ingredients.map((ingredient, index) => (
             <Grid container spacing={1} key={index}>
+              {/* Name Field */}
               <Grid item xs={5}>
                 <TextField
                   label="Name"
@@ -194,18 +212,28 @@ const MealForm = ({ onMealSubmit }) => {
                   required
                 />
               </Grid>
+
+              {/* Quantity Field */}
               <Grid item xs={3}>
                 <TextField
                   label="Quantity"
-                  type="number"
                   value={ingredient.quantity}
-                  onChange={(e) =>
-                    handleIngredientChange(index, "quantity", e.target.value)
-                  }
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === "" || /^\d+(\.\d{0,2})?$/.test(val)) {
+                      handleIngredientChange(index, "quantity", val);
+                    }
+                  }}
                   fullWidth
                   required
+                  inputProps={{
+                    inputMode: "decimal",
+                    pattern: "[0-9]+([.][0-9]{1,2})?",
+                  }}
                 />
               </Grid>
+
+              {/* Unit Field */}
               <Grid item xs={3}>
                 <TextField
                   label="Unit"
@@ -217,10 +245,13 @@ const MealForm = ({ onMealSubmit }) => {
                   required
                 />
               </Grid>
+
+              {/* Remove Button */}
               <Grid item xs={1}>
                 <IconButton
                   onClick={() => handleRemoveIngredient(index)}
                   color="error"
+                  aria-label="delete"
                 >
                   <DeleteIcon />
                 </IconButton>
