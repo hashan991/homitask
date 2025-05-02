@@ -17,7 +17,7 @@ const DashMealForm = () => {
                 <Navbar />
                 <Box 
                     sx={{ 
-                        padding: "20px", 
+                       // padding: "20px", 
                         backgroundColor: "#e0e0e0", 
                         minHeight: "100vh" 
                     }}

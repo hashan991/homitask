@@ -67,9 +67,32 @@ const EditShoppingList = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ pt: 5 }}>
-      <Paper sx={{ p: 4, borderRadius: 3 }}>
-        <Typography variant="h5" fontWeight="bold" mb={2}>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        background: "linear-gradient(to bottom right, #fefefe, #e7efff)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        py: 6,
+        px: 2,
+      }}
+    >
+      <Paper
+        elevation={8}
+        sx={{
+          width: "100%",
+          maxWidth: "700px",
+          borderRadius: 4,
+          border: "2px solid #e0e0e0",
+          backgroundColor: "#ffffffcc",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
+          p: 4,
+        }}
+      >
+        <Typography variant="h5" fontWeight="bold" mb={3} color="text.primary">
           ✏️ Edit Shopping List
         </Typography>
 
@@ -93,13 +116,19 @@ const EditShoppingList = () => {
           InputLabelProps={{ shrink: true }}
         />
 
-        <Typography variant="h6" fontWeight="bold" mt={3}>
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          mt={4}
+          mb={1}
+          color="text.primary"
+        >
           📝 Items
         </Typography>
 
         {form.items.map((item, index) => (
-          <Grid container spacing={1} key={index} mt={1}>
-            <Grid item xs={5}>
+          <Grid container spacing={2} key={index} alignItems="center" mt={0.5}>
+            <Grid item xs={12} sm={5}>
               <TextField
                 label="Name"
                 value={item.name}
@@ -109,7 +138,7 @@ const EditShoppingList = () => {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={6} sm={3}>
               <TextField
                 label="Quantity"
                 type="number"
@@ -120,7 +149,7 @@ const EditShoppingList = () => {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={6} sm={3}>
               <TextField
                 label="Unit"
                 value={item.unit}
@@ -130,26 +159,43 @@ const EditShoppingList = () => {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={1}>
-              <IconButton onClick={() => handleRemoveItem(index)} color="error">
+            <Grid item xs={12} sm={1} sx={{ textAlign: "center" }}>
+              <IconButton
+                color="error"
+                onClick={() => {
+                  const confirmed = window.confirm(
+                    "Are you sure you want to remove this item?"
+                  );
+                  if (confirmed) {
+                    handleRemoveItem(index);
+                  }
+                }}
+              >
                 <DeleteIcon />
               </IconButton>
             </Grid>
           </Grid>
         ))}
 
-        <Box display="flex" justifyContent="flex-end" mt={4}>
+        <Box display="flex" justifyContent="flex-end" mt={5}>
           <Button
             variant="contained"
             color="primary"
             onClick={handleUpdate}
-            sx={{ textTransform: "none", fontWeight: "bold" }}
+            sx={{
+              textTransform: "none",
+              fontWeight: "bold",
+              px: 4,
+              py: 1,
+              borderRadius: 2,
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            }}
           >
             💾 Save Changes
           </Button>
         </Box>
       </Paper>
-    </Container>
+    </Box>
   );
 };
 

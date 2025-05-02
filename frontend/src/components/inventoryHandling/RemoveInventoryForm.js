@@ -114,194 +114,204 @@ export default function RemoveInventoryForm() {
     }
   };
 
-  return (
+return (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      minHeight: "117vh",
+      backgroundImage:
+        "url('https://cdn.pixabay.com/photo/2024/10/19/12/21/vegetables-9132663_1280.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      position: "relative",
+    }}
+  >
+    {/* Dark Blur Overlay */}
     <div
       style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: "#f5f5f5",
-      }}
-      >
-      <div style={{
-        backgroundColor: "rgba(255, 255, 255, 0.8)",
-        padding: "20px 40px",
-        borderRadius: "8px",
-        boxShadow: "0 0 15px rgba(0, 0, 0, 0.3)",
+        position: "absolute",
+        top: 0,
+        left: 0,
         width: "100%",
-        maxWidth: "450px",
-        border: "2px solid #3498db", 
-      }}>
-        <h2 style={{ textAlign: "center", marginBottom: "20px", color: "#3498db" }}>Removed Inventory Form</h2>
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="name" style={{ color: "#333" }}>Item Name:</label>
+        height: "100%",
+        backdropFilter: "blur(6px)",
+        WebkitBackdropFilter: "blur(6px)",
+        backgroundColor: "rgba(0, 0, 0, 0.4)", // <-- darker background
+        zIndex: 0,
+      }}
+    ></div>
+
+    {/* White Theme Card */}
+    <div
+      style={{
+        position: "relative",
+        zIndex: 1,
+        background: "rgba(255, 255, 255, 0.75)",
+        padding: "35px 40px",
+        borderRadius: "20px",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        border: "1px solid rgba(255, 255, 255, 0.3)",
+        boxShadow: "0 8px 32px rgba(31, 38, 135, 0.2)",
+        width: "100%",
+        maxWidth: "500px",
+        color: "#222",
+      }}
+    >
+      <h2
+        style={{
+          textAlign: "center",
+          marginBottom: "30px",
+          fontWeight: "600",
+          fontSize: "24px",
+          color: "#333",
+          letterSpacing: "1px",
+        }}
+      >
+        Removed Inventory Form
+      </h2>
+
+      {/* Form continues... */}
+
+      <form onSubmit={handleSubmit}>
+        {[
+          { id: "name", label: "Item Name", type: "text" },
+          { id: "quantity", label: "Quantity", type: "number" },
+          { id: "threshold", label: "Threshold", type: "number" },
+          { id: "expiryDate", label: "Expire Date", type: "date" },
+        ].map(({ id, label, type }) => (
+          <div style={{ marginBottom: "15px" }} key={id}>
+            <label htmlFor={id}>{label}</label>
             <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+              type={type}
+              id={id}
+              name={id}
+              value={formData[id]}
               onChange={handleChange}
-              required
               style={{
                 width: "100%",
                 padding: "10px",
                 marginTop: "5px",
                 borderRadius: "5px",
-                border: "1px solid #ddd"
+                border: "none",
+                backgroundColor: "rgba(255, 255, 255, 0.9)",
               }}
             />
-            {errors.name && <div style={{ color: "red", fontSize: "12px" }}>{errors.name}</div>}
+            {errors[id] && (
+              <div style={{ color: "pink", fontSize: "12px" }}>
+                {errors[id]}
+              </div>
+            )}
           </div>
+        ))}
 
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "15px" }}>
-            <div style={{ flex: 1, marginRight: "10px" }}>
-              <label htmlFor="quantity" style={{ color: "#333" }}>Quantity:</label>
-              <input
-                type="number"
-                id="quantity"
-                name="quantity"
-                value={formData.quantity}
-                onChange={handleChange}
-                required
-                min="0"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginTop: "5px",
-                  borderRadius: "5px",
-                  border: "1px solid #ddd"
-                }}
-              />
-              {errors.quantity && <div style={{ color: "red", fontSize: "12px" }}>{errors.quantity}</div>}
-            </div>
-
-            <div style={{ flex: 1 }}>
-              <label htmlFor="quantityType" style={{ color: "#333" }}>Quantity Type:</label>
-              <select
-                id="quantityType"
-                name="quantityType"
-                value={formData.quantityType}
-                onChange={handleChange}
-                required
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  marginTop: "5px",
-                  borderRadius: "5px",
-                  border: "1px solid #ddd"
-                }}
-              >
-                <option value="" disabled>Select Quantity Type</option>
-                {quantityTypeOptions.map((type, index) => (
-                  <option key={index} value={type}>{type}</option>
-                ))}
-              </select>
-              {errors.quantityType && <div style={{ color: "red", fontSize: "12px" }}>{errors.quantityType}</div>}
-            </div>
-          </div>
-
-          <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="category" style={{ color: "#333" }}>Category:</label>
-            <select
-              id="category"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "10px",
-                marginTop: "5px",
-                borderRadius: "5px",
-                border: "1px solid #ddd"
-              }}
-            >
-              <option value="" disabled>Select Category</option>
-              {categoryOptions.map((category, index) => (
-                <option key={index} value={category}>{category}</option>
-              ))}
-            </select>
-            {errors.category && <div style={{ color: "red", fontSize: "12px" }}>{errors.category}</div>}
-          </div>
-
-          <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="expiryDate" style={{ color: "#333" }}>Expire Date:</label>
-            <input
-              type="date"
-              id="expiryDate"
-              name="expiryDate"
-              value={formData.expiryDate}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "10px",
-                marginTop: "5px",
-                borderRadius: "5px",
-                border: "1px solid #ddd"
-              }}
-            />
-            {errors.expiryDate && <div style={{ color: "red", fontSize: "12px" }}>{errors.expiryDate}</div>}
-          </div>
-
-          <div style={{ marginBottom: "20px" }}>
-            <label htmlFor="threshold" style={{ color: "#333" }}>Threshold:</label>
-            <input
-              type="number"
-              id="threshold"
-              name="threshold"
-              value={formData.threshold}
-              onChange={handleChange}
-              required
-              min="0"
-              style={{
-                width: "100%",
-                padding: "10px",
-                marginTop: "5px",
-                borderRadius: "5px",
-                border: "1px solid #ddd"
-              }}
-            />
-            {errors.threshold && <div style={{ color: "red", fontSize: "12px" }}>{errors.threshold}</div>}
-          </div>
-
-          <button
-            type="submit"
+        {/* Quantity Type Dropdown */}
+        <div style={{ marginBottom: "15px" }}>
+          <label htmlFor="quantityType">Quantity Type:</label>
+          <select
+            id="quantityType"
+            name="quantityType"
+            value={formData.quantityType}
+            onChange={handleChange}
             style={{
-              backgroundColor: "#3498db",
-              color: "white",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "5px",
               width: "100%",
-              cursor: "pointer",
-              marginBottom: "15px"
+              padding: "10px",
+              marginTop: "5px",
+              borderRadius: "5px",
+              border: "none",
+              backgroundColor: "rgba(255, 255, 255, 0.9)",
             }}
           >
-            {isEditMode ? "Update Removed Item" : "Add to Removed Inventory"}
-          </button>
-          <button
+            <option value="" disabled>
+              Select Quantity Type
+            </option>
+            {quantityTypeOptions.map((type, index) => (
+              <option key={index} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
+          {errors.quantityType && (
+            <div style={{ color: "pink", fontSize: "12px" }}>
+              {errors.quantityType}
+            </div>
+          )}
+        </div>
+
+        {/* Category Dropdown */}
+        <div style={{ marginBottom: "20px" }}>
+          <label htmlFor="category">Category:</label>
+          <select
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            style={{
+              width: "100%",
+              padding: "10px",
+              marginTop: "5px",
+              borderRadius: "5px",
+              border: "none",
+              backgroundColor: "rgba(255, 255, 255, 0.9)",
+            }}
+          >
+            <option value="" disabled>
+              Select Category
+            </option>
+            {categoryOptions.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+          {errors.category && (
+            <div style={{ color: "pink", fontSize: "12px" }}>
+              {errors.category}
+            </div>
+          )}
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          style={{
+            backgroundColor: "#e91e63",
+            color: "white",
+            padding: "12px 20px",
+            border: "none",
+            borderRadius: "5px",
+            width: "100%",
+            fontSize: "16px",
+            cursor: "pointer",
+            marginBottom: "15px",
+          }}
+        >
+          {isEditMode ? "Update Removed Item" : "Add to Removed Inventory"}
+        </button>
+
+        {/* View Table Button */}
+        <button
           type="button"
           onClick={() => navigate("/dashremoveinventorytable")}
           style={{
-            marginTop: "20px",
-            backgroundColor: "#e74c3c",
-              color: "white",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "5px",
-              width: "100%",
-              cursor: "pointer",
-              marginBottom: "15px"
+            backgroundColor: "#333",
+            color: "white",
+            padding: "10px 20px",
+            border: "none",
+            borderRadius: "5px",
+            width: "100%",
+            cursor: "pointer",
           }}
         >
           View Remove Inventory Table
         </button>
-        
-        </form>
-        </div>
-      </div>
-  );
+      </form>
+    </div>
+  </div>
+);
+
+
 }

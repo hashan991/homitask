@@ -11,6 +11,7 @@ import {
   ListItemIcon,
   Divider,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -70,81 +71,149 @@ const SavedLists = () => {
     }
   };
 
-  return (
-    <Container maxWidth="sm" sx={{ pt: 5 }}>
-      <Box display="flex" alignItems="center" gap={1} mb={3}>
-        <ShoppingCartIcon color="primary" fontSize="large" />
-        <Typography variant="h5" fontWeight="bold">
-          Saved Shopping Lists
-        </Typography>
-      </Box>
+ return (
+   <Box
+     sx={{
+       minHeight: "100vh",
+       background: "linear-gradient(135deg, #f5f7fa, #e2eafc)", // 🌤️ Light gradient
+       display: "flex",
+       justifyContent: "center",
+       alignItems: "flex-start",
+       px: 2,
+       py: 6,
+     }}
+   >
+     <Paper
+       elevation={8}
+       sx={{
+         width: "100%",
+         maxWidth: "1100px",
+         borderRadius: 4,
+         p: 4,
+         backgroundColor: "#ffffffcc", // semi-transparent white
+         border: "1px solid #ddd",
+         boxShadow: "0 10px 30px rgba(0, 0, 0, 0.26)",
+         backdropFilter: "blur(10px)",
+       }}
+     >
+       <Container maxWidth="md">
+         <Box display="flex" alignItems="center" gap={2} mb={4}>
+           <ShoppingCartIcon color="primary" sx={{ fontSize: 40 }} />
+           <Typography variant="h4" fontWeight="bold" color="text.primary">
+             Saved Shopping Lists
+           </Typography>
+         </Box>
 
-      {lists.length === 0 ? (
-        <Typography>No saved lists found.</Typography>
-      ) : (
-        <List>
-          {lists.map((list) => (
-            <Paper
-              key={list._id}
-              elevation={3}
-              sx={{ mb: 3, p: 3, borderRadius: 2, backgroundColor: "#f9f9f9" }}
-            >
-              <Box mb={1} display="flex" justifyContent="space-between">
-                <Typography variant="h6" fontWeight="bold">
-                  📝 {list.name}
-                </Typography>
-                <Box>
-                  <IconButton
-                    color="primary"
-                    onClick={() =>
-                      navigate("/edit-list/:id", { state: { list } })
-                    }
-                  >
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton
-                    color="error"
-                    onClick={() => handleDeleteList(list._id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Box>
-              </Box>
-              <Divider sx={{ mb: 1 }} />
-              <ListItem disableGutters>
-                <ListItemIcon>
-                  <CalendarMonthIcon color="action" />
-                </ListItemIcon>
-                <ListItemText
-                  primary={`Date: ${new Date(list.date).toLocaleDateString()}`}
-                />
-              </ListItem>
-              <ListItem disableGutters>
-                <ListItemIcon>
-                  <PriceCheckIcon color="success" />
-                </ListItemIcon>
-                <ListItemText
-                  primary={`Total Meal Price: $${calculateTotalPrice(
-                    list.mealIds
-                  ).toFixed(2)}`}
-                />
-              </ListItem>
+         {lists.length === 0 ? (
+           <Typography variant="h6" color="text.secondary">
+             No saved lists found.
+           </Typography>
+         ) : (
+           <List>
+             {lists.map((list) => (
+               <Paper
+                 key={list._id}
+                 elevation={3}
+                 sx={{
+                   mb: 4,
+                   p: 3,
+                   borderRadius: 4,
+                   backgroundColor: "#ffffff",
+                   border: "1px solid #e0e0e0",
+                   boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+                   transition: "0.3s",
+                   "&:hover": {
+                     boxShadow: "0 6px 24px rgba(0,0,0,0.1)",
+                     transform: "translateY(-2px)",
+                   },
+                 }}
+               >
+                 <Box
+                   display="flex"
+                   justifyContent="space-between"
+                   alignItems="center"
+                 >
+                   <Typography
+                     variant="h6"
+                     fontWeight="600"
+                     color="text.primary"
+                   >
+                     📝 {list.name}
+                   </Typography>
 
-              <Box display="flex" justifyContent="flex-end" mt={2}>
-                <Button
-                  variant="contained"
-                  startIcon={<VisibilityIcon />}
-                  onClick={() => navigate("/view-list", { state: { list } })}
-                >
-                  View List
-                </Button>
-              </Box>
-            </Paper>
-          ))}
-        </List>
-      )}
-    </Container>
-  );
+                   <Box>
+                     <Tooltip title="Edit">
+                       <IconButton
+                         color="primary"
+                         onClick={() =>
+                           navigate("/edit-list/:id", { state: { list } })
+                         }
+                       >
+                         <EditIcon />
+                       </IconButton>
+                     </Tooltip>
+                     <Tooltip title="Delete">
+                       <IconButton
+                         color="error"
+                         onClick={() => handleDeleteList(list._id)}
+                       >
+                         <DeleteIcon />
+                       </IconButton>
+                     </Tooltip>
+                   </Box>
+                 </Box>
+
+                 <Divider sx={{ my: 2 }} />
+
+                 <ListItem disableGutters>
+                   <ListItemIcon>
+                     <CalendarMonthIcon color="info" />
+                   </ListItemIcon>
+                   <ListItemText
+                     primary={`Date: ${new Date(
+                       list.date
+                     ).toLocaleDateString()}`}
+                     primaryTypographyProps={{ fontSize: 16 }}
+                   />
+                 </ListItem>
+
+                 <ListItem disableGutters>
+                   <ListItemIcon>
+                     <PriceCheckIcon color="success" />
+                   </ListItemIcon>
+                   <ListItemText
+                     primary={`Total Price: $${calculateTotalPrice(
+                       list.mealIds
+                     ).toFixed(2)}`}
+                     primaryTypographyProps={{ fontSize: 16 }}
+                   />
+                 </ListItem>
+
+                 <Box display="flex" justifyContent="flex-end" mt={3}>
+                   <Button
+                     variant="contained"
+                     startIcon={<VisibilityIcon />}
+                     onClick={() => navigate("/view-list", { state: { list } })}
+                     sx={{
+                       textTransform: "none",
+                       fontWeight: "600",
+                       borderRadius: 2,
+                       px: 3,
+                       py: 1,
+                     }}
+                   >
+                     View List
+                   </Button>
+                 </Box>
+               </Paper>
+             ))}
+           </List>
+         )}
+       </Container>
+     </Paper>
+   </Box>
+ );
+
 };
 
 export default SavedLists;

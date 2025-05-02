@@ -117,45 +117,59 @@ export default function InventoryForm() {
   };
 
   return (
-    <div style={{
-      
-      position: "relative",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "120vh",
-      padding: "10px",
-      overflow: "hidden"
-    }}>
-      <div style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        backgroundImage: `url(${inventoryImg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        filter: "brightness(0.3)", // this darkens the image
-        zIndex: 1
-      }} />
-    
-      
-      <div style={{
+    <div
+      style={{
         position: "relative",
-        backgroundColor: "rgba(252, 241, 241, 0.8)",
-        padding: "20px 40px",
-        borderRadius: "8px",
-        boxShadow: "0 0 15px rgba(0, 0, 0, 0.3)",
-        width: "100%",
-        maxWidth: "450px",
-        border: "2px solid rgb(231, 25, 25)", 
-        zIndex: 1,
-      }}>
-        <h2 style={{ textAlign: "center", marginBottom: "20px", color: "#3498db" }}>Inventory Form</h2>
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "114vh",
+        padding: "10px",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundImage: `url(${inventoryImg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(5px) brightness(0.5)", // Blur + Darken
+          zIndex: 0, // Send behind content
+        }}
+      />
+
+      <div
+        style={{
+          position: "relative",
+          backgroundColor: "rgba(252, 241, 241, 0.8)",
+          padding: "20px 40px",
+          borderRadius: "8px",
+          boxShadow: "0 0 15px rgba(0, 0, 0, 0.3)",
+          width: "100%",
+          maxWidth: "450px",
+          //border: "2px solid rgb(231, 25, 25)",
+          zIndex: 1,
+        }}
+      >
+        <h2
+          style={{
+            textAlign: "center",
+            marginBottom: "20px",
+            color: "#3498db",
+          }}
+        >
+          Inventory Form
+        </h2>
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="name" style={{ color: "#333" }}>Item Name:</label>
+            <label htmlFor="name" style={{ color: "#333" }}>
+              Item Name:
+            </label>
             <input
               type="text"
               id="name"
@@ -168,15 +182,27 @@ export default function InventoryForm() {
                 padding: "10px",
                 marginTop: "5px",
                 borderRadius: "5px",
-                border: "1px solid #ddd"
+                border: "1px solid #ddd",
               }}
             />
-            {errors.name && <div style={{ color: "red", fontSize: "12px" }}>{errors.name}</div>}
+            {errors.name && (
+              <div style={{ color: "red", fontSize: "12px" }}>
+                {errors.name}
+              </div>
+            )}
           </div>
 
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "15px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "15px",
+            }}
+          >
             <div style={{ flex: 1, marginRight: "10px" }}>
-              <label htmlFor="quantity" style={{ color: "#333" }}>Quantity:</label>
+              <label htmlFor="quantity" style={{ color: "#333" }}>
+                Quantity:
+              </label>
               <input
                 type="number"
                 id="quantity"
@@ -190,14 +216,20 @@ export default function InventoryForm() {
                   padding: "10px",
                   marginTop: "5px",
                   borderRadius: "5px",
-                  border: "1px solid #ddd"
+                  border: "1px solid #ddd",
                 }}
               />
-              {errors.quantity && <div style={{ color: "red", fontSize: "12px" }}>{errors.quantity}</div>}
+              {errors.quantity && (
+                <div style={{ color: "red", fontSize: "12px" }}>
+                  {errors.quantity}
+                </div>
+              )}
             </div>
 
             <div style={{ flex: 1 }}>
-              <label htmlFor="quantityType" style={{ color: "#333" }}>Quantity Type:</label>
+              <label htmlFor="quantityType" style={{ color: "#333" }}>
+                Quantity Type:
+              </label>
               <select
                 id="quantityType"
                 name="quantityType"
@@ -209,20 +241,30 @@ export default function InventoryForm() {
                   padding: "10px",
                   marginTop: "5px",
                   borderRadius: "5px",
-                  border: "1px solid #ddd"
+                  border: "1px solid #ddd",
                 }}
               >
-                <option value="" disabled>Select Quantity Type</option>
+                <option value="" disabled>
+                  Select Quantity Type
+                </option>
                 {quantityTypeOptions.map((type, index) => (
-                  <option key={index} value={type}>{type}</option>
+                  <option key={index} value={type}>
+                    {type}
+                  </option>
                 ))}
               </select>
-              {errors.quantityType && <div style={{ color: "red", fontSize: "12px" }}>{errors.quantityType}</div>}
+              {errors.quantityType && (
+                <div style={{ color: "red", fontSize: "12px" }}>
+                  {errors.quantityType}
+                </div>
+              )}
             </div>
           </div>
 
           <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="category" style={{ color: "#333" }}>Category:</label>
+            <label htmlFor="category" style={{ color: "#333" }}>
+              Category:
+            </label>
             <select
               id="category"
               name="category"
@@ -234,19 +276,29 @@ export default function InventoryForm() {
                 padding: "10px",
                 marginTop: "5px",
                 borderRadius: "5px",
-                border: "1px solid #ddd"
+                border: "1px solid #ddd",
               }}
             >
-              <option value="" disabled>Select Category</option>
+              <option value="" disabled>
+                Select Category
+              </option>
               {categoryOptions.map((category, index) => (
-                <option key={index} value={category}>{category}</option>
+                <option key={index} value={category}>
+                  {category}
+                </option>
               ))}
             </select>
-            {errors.category && <div style={{ color: "red", fontSize: "12px" }}>{errors.category}</div>}
+            {errors.category && (
+              <div style={{ color: "red", fontSize: "12px" }}>
+                {errors.category}
+              </div>
+            )}
           </div>
 
           <div style={{ marginBottom: "15px" }}>
-            <label htmlFor="expiryDate" style={{ color: "#333" }}>Expire Date:</label>
+            <label htmlFor="expiryDate" style={{ color: "#333" }}>
+              Expire Date:
+            </label>
             <input
               type="date"
               id="expiryDate"
@@ -259,14 +311,20 @@ export default function InventoryForm() {
                 padding: "10px",
                 marginTop: "5px",
                 borderRadius: "5px",
-                border: "1px solid #ddd"
+                border: "1px solid #ddd",
               }}
             />
-            {errors.expiryDate && <div style={{ color: "red", fontSize: "12px" }}>{errors.expiryDate}</div>}
+            {errors.expiryDate && (
+              <div style={{ color: "red", fontSize: "12px" }}>
+                {errors.expiryDate}
+              </div>
+            )}
           </div>
 
           <div style={{ marginBottom: "20px" }}>
-            <label htmlFor="threshold" style={{ color: "#333" }}>Threshold:</label>
+            <label htmlFor="threshold" style={{ color: "#333" }}>
+              Threshold:
+            </label>
             <input
               type="number"
               id="threshold"
@@ -280,10 +338,14 @@ export default function InventoryForm() {
                 padding: "10px",
                 marginTop: "5px",
                 borderRadius: "5px",
-                border: "1px solid #ddd"
+                border: "1px solid #ddd",
               }}
             />
-            {errors.threshold && <div style={{ color: "red", fontSize: "12px" }}>{errors.threshold}</div>}
+            {errors.threshold && (
+              <div style={{ color: "red", fontSize: "12px" }}>
+                {errors.threshold}
+              </div>
+            )}
           </div>
 
           <button
@@ -296,7 +358,7 @@ export default function InventoryForm() {
               borderRadius: "5px",
               width: "100%",
               cursor: "pointer",
-              marginBottom: "15px"
+              marginBottom: "15px",
             }}
           >
             {isEditMode ? "Update Item" : "Add Item"}
@@ -314,13 +376,12 @@ export default function InventoryForm() {
             border: "none",
             borderRadius: "5px",
             width: "100%",
-            cursor: "pointer"
+            cursor: "pointer",
           }}
         >
           View Table
         </button>
-        </div>
       </div>
-    
+    </div>
   );
 }
