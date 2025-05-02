@@ -9,17 +9,21 @@ import {
   Box,
   Divider,
   Chip,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import SearchIcon from "@mui/icons-material/Search";
 
 const ViewList = () => {
   const location = useLocation();
   const { list } = location.state || {};
   const [totalPrice, setTotalPrice] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchAndCalculatePrice = async () => {
@@ -45,6 +49,10 @@ const ViewList = () => {
 
     fetchAndCalculatePrice();
   }, [list]);
+
+  const filteredItems = list.items?.filter((item) =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <Box
@@ -127,38 +135,61 @@ const ViewList = () => {
             🧾 Ingredients List
           </Typography>
 
+          {/* Search Bar */}
+          <TextField
+            placeholder="Search ingredient..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            fullWidth
+            size="small"
+            sx={{ mb: 2, backgroundColor: "white", borderRadius: 1 }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon color="action" />
+                </InputAdornment>
+              ),
+            }}
+          />
+
           <Divider sx={{ mb: 2 }} />
 
-          <List dense>
-            {list.items.map((item, index) => (
-              <ListItem key={index} disableGutters sx={{ mb: 1 }}>
-                <ListItemText
-                  primary={
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      <Typography fontWeight={500} sx={{ color: "#333" }}>
-                        {item.name}
-                      </Typography>
-                      <Chip
-                        label={`${item.quantity} ${item.unit}`}
-                        color="primary"
-                        size="small"
-                        sx={{
-                          fontWeight: "bold",
-                          fontSize: "0.8rem",
-                          backgroundColor: "#e3f2fd",
-                          color: "#0d47a1",
-                        }}
-                      />
-                    </Box>
-                  }
-                />
-              </ListItem>
-            ))}
-          </List>
+          {filteredItems.length === 0 ? (
+            <Typography variant="body2" color="text.secondary">
+              No ingredients match your search.
+            </Typography>
+          ) : (
+            <List dense>
+              {filteredItems.map((item, index) => (
+                <ListItem key={index} disableGutters sx={{ mb: 1 }}>
+                  <ListItemText
+                    primary={
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Typography fontWeight={500} sx={{ color: "#333" }}>
+                          {item.name}
+                        </Typography>
+                        <Chip
+                          label={`${item.quantity} ${item.unit}`}
+                          color="primary"
+                          size="small"
+                          sx={{
+                            fontWeight: "bold",
+                            fontSize: "0.8rem",
+                            backgroundColor: "#e3f2fd",
+                            color: "#0d47a1",
+                          }}
+                        />
+                      </Box>
+                    }
+                  />
+                </ListItem>
+              ))}
+            </List>
+          )}
         </Paper>
       </Paper>
     </Box>

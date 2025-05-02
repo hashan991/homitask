@@ -17,11 +17,20 @@ const SaveListForm = () => {
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
 
+  const today = new Date().toISOString().split("T")[0]; // Format: yyyy-mm-dd
+
   const handleSave = async () => {
     if (!name || !date || !items || !mealIds) {
       return alert(
         "❗ Please fill in all fields and ensure list data is available."
       );
+    }
+
+    const selectedDate = new Date(date);
+    const currentDate = new Date(today);
+
+    if (selectedDate < currentDate) {
+      return alert("❗ You cannot select a past date.");
     }
 
     try {
@@ -90,6 +99,7 @@ const SaveListForm = () => {
             value={date}
             onChange={(e) => setDate(e.target.value)}
             InputLabelProps={{ shrink: true }}
+            inputProps={{ min: today }}
             required
             fullWidth
             sx={{ backgroundColor: "#fafafa", borderRadius: 1 }}

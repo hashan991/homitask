@@ -8,10 +8,12 @@ import {
   TextField,
   Grid,
   IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SearchIcon from "@mui/icons-material/Search";
 
 const EditShoppingList = () => {
   const { state } = useLocation();
@@ -24,6 +26,8 @@ const EditShoppingList = () => {
     mealIds: [],
     items: [],
   });
+
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     if (list) {
@@ -52,7 +56,37 @@ const EditShoppingList = () => {
     setForm({ ...form, items: updated });
   };
 
+  const validateForm = () => {
+    if (!form.name || !form.date) {
+      alert("❗ List name and date are required.");
+      return false;
+    }
+
+    const selectedDate = new Date(form.date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (selectedDate < today) {
+      alert("❗ Date cannot be in the past.");
+      return false;
+    }
+
+    for (let item of form.items) {
+      if (!item.name || !item.unit || !item.quantity) {
+        alert("❗ Each item must have a name, quantity, and unit.");
+        return false;
+      }
+      if (isNaN(item.quantity) || item.quantity <= 0) {
+        alert("❗ Quantity must be a positive number.");
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const handleUpdate = async () => {
+    if (!validateForm()) return;
+
     try {
       await axios.put(
         `http://localhost:8070/api/shopping-list/${list._id}`,
@@ -65,6 +99,12 @@ const EditShoppingList = () => {
       alert("Failed to update list.");
     }
   };
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const filteredItems = form.items.filter((item) =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <Box
@@ -82,7 +122,7 @@ const EditShoppingList = () => {
         elevation={8}
         sx={{
           width: "100%",
-          maxWidth: "700px",
+          maxWidth: "750px",
           borderRadius: 4,
           border: "2px solid #e0e0e0",
           backgroundColor: "#ffffffcc",
@@ -103,6 +143,7 @@ const EditShoppingList = () => {
           margin="normal"
           value={form.name}
           onChange={handleChange}
+          required
         />
 
         <TextField
@@ -113,7 +154,25 @@ const EditShoppingList = () => {
           margin="normal"
           value={form.date}
           onChange={handleChange}
+          inputProps={{ min: today }}
           InputLabelProps={{ shrink: true }}
+          required
+        />
+
+        {/* 🔍 Search Bar */}
+        <TextField
+          placeholder="Search Item by Name"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          fullWidth
+          sx={{ mt: 3 }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon color="action" />
+              </InputAdornment>
+            ),
+          }}
         />
 
         <Typography
@@ -126,7 +185,13 @@ const EditShoppingList = () => {
           📝 Items
         </Typography>
 
-        {form.items.map((item, index) => (
+        {filteredItems.length === 0 && (
+          <Typography variant="body1" color="text.secondary" mb={2}>
+            No matching items found.
+          </Typography>
+        )}
+
+        {filteredItems.map((item, index) => (
           <Grid container spacing={2} key={index} alignItems="center" mt={0.5}>
             <Grid item xs={12} sm={5}>
               <TextField
