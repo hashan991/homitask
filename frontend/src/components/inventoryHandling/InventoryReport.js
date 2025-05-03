@@ -317,128 +317,43 @@ const InventoryReport = () => {
       {/* PDF Content Area */}
       <div id="reportCaptureArea">
         {/* Header Section */}
-        <Paper
-          elevation={0}
+        <Box
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", md: "row" },
             alignItems: "center",
-            background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
-            color: "white",
+            backgroundColor: "#dbe1e8",
             padding: 3,
-            borderRadius: 3,
+            borderRadius: 2,
             mb: 4,
-            boxShadow: "0 10px 25px rgba(99, 102, 241, 0.2)",
-            position: "relative",
-            overflow: "hidden",
           }}
         >
-          {/* Decorative elements */}
-          <Box
-            sx={{
-              position: "absolute",
-              top: -20,
-              right: -20,
-              width: 120,
-              height: 120,
-              borderRadius: "50%",
-              bgcolor: "rgba(255,255,255,0.1)",
-            }}
-          />
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: -30,
-              left: "50%",
-              width: 150,
-              height: 150,
-              borderRadius: "50%",
-              bgcolor: "rgba(255,255,255,0.05)",
-            }}
-          />
-
-          <Box
-            sx={{
-              mr: { md: 4 },
-              mb: { xs: 2, md: 0 },
-              position: "relative",
-              zIndex: 1,
-            }}
-          >
-            <Box
-              sx={{
-                width: 100,
-                height: 100,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                bgcolor: "rgba(255,255,255,0.9)",
-                borderRadius: 2,
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-              }}
-            >
-              <InventoryIcon sx={{ fontSize: 60, color: "#6366F1" }} />
-            </Box>
+          {/* Logo */}
+          <Box sx={{ mr: 3 }}>
+            <img
+              src="/logo.png" // replace with your actual path
+              alt="PRI Rubber Logo"
+              style={{ width: 100, height: 100, borderRadius: "8px" }}
+            />
           </Box>
-
-          <Box sx={{ position: "relative", zIndex: 1, maxWidth: "800px" }}>
+          {/* Company Info */}
+          <Box>
             <Typography
               variant="h3"
               gutterBottom
+              align="center"
               fontWeight="bold"
-              sx={{
-                background: "linear-gradient(90deg, #ffffff 0%, #e0e7ff 100%)",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                textAlign: { xs: "center", md: "left" },
-              }}
             >
-              Inventory Dashboard
+              📋 Inventory Dashboard
             </Typography>
 
-            <Typography
-              variant="body1"
-              sx={{
-                color: "rgba(255,255,255,0.9)",
-                textAlign: { xs: "center", md: "left" },
-              }}
-            >
+            <Typography variant="body1" sx={{ mt: 1 }}>
               A comprehensive overview of your inventory management system,
               providing real-time insights into stock levels, item usage, and
               actionable recommendations.
             </Typography>
-
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 1,
-                mt: 2,
-                justifyContent: { xs: "center", md: "flex-start" },
-              }}
-            >
-              <StatusChip
-                label="Total Items"
-                count={report.totalItems}
-                icon={<InventoryIcon fontSize="small" />}
-                color="#fff"
-              />
-              <StatusChip
-                label="Low Stock"
-                count={report.lowStockCount}
-                icon={<WarningAmberIcon fontSize="small" />}
-                color="#fff"
-              />
-              <StatusChip
-                label="Expiring Soon"
-                count={report.expiringSoonCount}
-                icon={<AccessTimeIcon fontSize="small" />}
-                color="#fff"
-              />
-            </Box>
           </Box>
-        </Paper>
+                
+        </Box>
 
         {/* Summary Cards */}
         <Grid container spacing={2} sx={{ mb: 4 }}>
