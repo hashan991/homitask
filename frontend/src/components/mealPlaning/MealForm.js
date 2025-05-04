@@ -49,10 +49,28 @@ export default function MealForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+
+    if (name === 'mealName') {
+      // Allow only letters and spaces, remove numbers and special characters
+      const filteredValue = value.replace(/[^a-zA-Z\s]/g, '');
+      setFormData({
+        ...formData,
+        [name]: filteredValue,
+      });
+    } else if (name === 'calories') {
+      // Allow only positive numbers
+      const filteredValue = value.replace(/[^0-9]/g, '');
+      setFormData({
+        ...formData,
+        [name]: filteredValue,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+
     setErrors({
       ...errors,
       [name]: "",
@@ -348,3 +366,10 @@ const buttonContainerStyle = {
   gap: "10px",
   marginTop: "20px",
 };
+
+
+const labelAnimation = {
+  color: '#6a1b9a',
+  animation: 'borderWave 2s infinite',
+};
+

@@ -53,9 +53,16 @@ export default function ShoppingForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     let validValue = value;
-    if (name === "qty" || name === "est") {
-      validValue = value.replace(/[^0-9.]/g, "");
-      if (parseFloat(validValue) < 0) validValue = "0";
+
+
+    if (name === 'name') {
+      // Allow only letters and spaces, remove numbers and special characters
+      validValue = value.replace(/[^a-zA-Z\s]/g, '');
+    } else if (name === 'qty' || name === 'est') {
+      // Allow only positive numbers and decimal points
+      validValue = value.replace(/[^0-9.]/g, '');
+      if (parseFloat(validValue) < 0) validValue = '0';
+
     }
     setFormData({ ...formData, [name]: validValue });
     setErrors({ ...errors, [name]: "" });
@@ -117,10 +124,12 @@ export default function ShoppingForm() {
       let url, method;
       if (location.state?.ShoppingItem?._id && location.state?.SecondId) {
         url = `http://localhost:8070/rshopping/update/${location.state.ShoppingItem._id}/${location.state.SecondId}`;
-        method = "PUT";
+
+        method = 'PUT';
       } else {
-        url = "http://localhost:8070/rshopping/add";
-        method = "POST";
+        url = 'http://localhost:8070/rshopping/add';
+        method = 'POST';
+
       }
 
       const response = await fetch(url, {
@@ -136,11 +145,9 @@ export default function ShoppingForm() {
         alert("Shopping list added successfully");
         navigate("/dashShoppingTable");
       } else {
-        alert(
-          `Failed to add shopping list. ${
-            responseData.message || "Unknown error"
-          }`
-        );
+
+        alert(`Failed to add shopping list. Server response: ${responseData.message || 'Unknown error'}`);
+
       }
     } catch (error) {
       console.error("Error:", error);
@@ -386,3 +393,119 @@ export default function ShoppingForm() {
     </Box>
   );
 }
+
+
+const styles = {
+  formContainer: {
+    maxWidth: '500px',
+    margin: 'auto',
+    padding: '25px',
+    backgroundColor: '#ffffff',
+    borderRadius: '12px',
+    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: '24px',
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: '15px',
+  },
+  input: {
+    width: '94%',
+    padding: '12px',
+    margin: '10px 0',
+    borderRadius: '8px',
+    border: '1px solid #ddd',
+    fontSize: '16px',
+    backgroundColor: '#f9f9f9',
+    transition: '0.3s',
+  },
+  select: {
+    width: '100%',
+    padding: '12px',
+    margin: '10px 0',
+    borderRadius: '8px',
+    border: '1px solid #ddd',
+    fontSize: '16px',
+    backgroundColor: '#f9f9f9',
+    transition: '0.3s',
+  },
+  addButton: {
+    width: '100%',
+    padding: '12px',
+    margin: '10px 0',
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '8px',
+    fontSize: '16px',
+    fontWeight: '600',
+    transition: '0.3s',
+  },
+  submitButton: {
+    width: '100%',
+    padding: '12px',
+    margin: '10px 0',
+    backgroundColor: '#007BFF',
+    color: 'white',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '8px',
+    fontSize: '16px',
+    fontWeight: '600',
+    transition: '0.3s',
+  },
+  viewButton: {
+    width: '100%',
+    padding: '12px',
+    margin:  '10px 0',
+    backgroundColor: '#FF9800',
+    color: 'white',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '8px',
+    fontSize: '16px',
+    fontWeight: '600',
+    transition: '0.3s',
+  },
+  list: {
+    listStyleType: 'none',
+    padding: 0,
+    margin: '10px 0',
+  },
+  listItem: {
+    padding: '12px',
+    backgroundColor: '#f4f4f4',
+    borderRadius: '8px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontSize: '16px',
+    boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)',
+    marginBottom: '8px',
+  },
+  deleteButton: {
+    backgroundColor: '#f44336',
+    color: 'white',
+    padding: '6px 12px',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '6px',
+    fontSize: '14px',
+    transition: '0.3s',
+  },
+  error: {
+    color: 'red',
+    fontSize: '14px',
+    marginTop: '-5px',
+  },
+};
+
+// Add hover effects
+styles.addButton[':hover'] = { backgroundColor: '#45a049' };
+styles.submitButton[':hover'] = { backgroundColor: '#0056b3' };
+styles.viewButton[':hover'] = { backgroundColor: '#e68900' };
+styles.deleteButton[':hover'] = { backgroundColor: '#d32f2f' };
+
