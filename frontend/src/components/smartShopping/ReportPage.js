@@ -371,7 +371,7 @@ function ReportPage() {
         <Typography
           variant="h5"
           gutterBottom
-          sx={{ fontWeight: "bold", mb: 3 }}
+          sx={{ fontWeight: "bold", mt: 30 }}
         >
           🛒 Shopping Lists (Smart Report)
         </Typography>
