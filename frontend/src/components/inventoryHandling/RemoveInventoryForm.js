@@ -181,7 +181,12 @@ return (
           { id: "name", label: "Item Name", type: "text" },
           { id: "quantity", label: "Quantity", type: "number" },
           { id: "threshold", label: "Threshold", type: "number" },
-          { id: "expiryDate", label: "Expire Date", type: "date" },
+          {
+            id: "expiryDate",
+            label: "Expire Date",
+            type: "date",
+            min: new Date().toISOString().split("T")[0], // 👈 Set today as the minimum date
+          },
         ].map(({ id, label, type }) => (
           <div style={{ marginBottom: "15px" }} key={id}>
             <label htmlFor={id}>{label}</label>
@@ -191,6 +196,11 @@ return (
               name={id}
               value={formData[id]}
               onChange={handleChange}
+              min={
+                id === "expiryDate"
+                  ? new Date().toISOString().split("T")[0]
+                  : undefined
+              }
               style={{
                 width: "100%",
                 padding: "10px",
@@ -200,6 +210,7 @@ return (
                 backgroundColor: "rgba(255, 255, 255, 0.9)",
               }}
             />
+
             {errors[id] && (
               <div style={{ color: "pink", fontSize: "12px" }}>
                 {errors[id]}
