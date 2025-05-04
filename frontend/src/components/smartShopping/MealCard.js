@@ -77,7 +77,7 @@ const MealCard = ({ meal, showActions = true, onEdit, onDelete }) => {
                 borderRadius: 2,
               }}
             >
-              💰 Price: ${meal.price}
+              💰 Price: Rs.{meal.price}
             </Typography>
           </Box>
 

@@ -1,37 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Typography,
+  TextField,
+  Select,
+  MenuItem,
+  Button,
+  InputLabel,
+  FormControl,
+  List,
+  ListItem,
+  IconButton,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function ShoppingForm() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const qtyTypes = ['Unit', 'Kg', 'g', 'L', 'ml', 'm'];
-  const categories = ['Kitchen', 'Garden', 'Garage', 'Cleaning'];
-  const priorities = ['High', 'Medium', 'Low'];
+  const qtyTypes = ["Unit", "Kg", "g", "L", "ml", "m"];
+  const categories = ["Kitchen", "Garden", "Garage", "Cleaning"];
+  const priorities = ["High", "Medium", "Low"];
 
   const [formData, setFormData] = useState({
-    name: '',
-    qty: '',
-    qtytype: '',
-    cate: '',
-    pri: '',
-    est: '',
+    name: "",
+    qty: "",
+    qtytype: "",
+    cate: "",
+    pri: "",
+    est: "",
   });
 
   const [errors, setErrors] = useState({});
   const [itemsList, setItemsList] = useState([]);
 
-  // Set the form data if we are updating an existing shopping list
   useEffect(() => {
     if (location.state && location.state.ShoppingItem) {
       const ShoppingItem = location.state.ShoppingItem;
       setFormData({
-        name: ShoppingItem.name || '',
-        qty: ShoppingItem.qty || '',
-        qtytype: ShoppingItem.qtytype || '',
-        cate: ShoppingItem.cate || '',
-        pri: ShoppingItem.pri || '',
-        est: ShoppingItem.est || '',
+        name: ShoppingItem.name || "",
+        qty: ShoppingItem.qty || "",
+        qtytype: ShoppingItem.qtytype || "",
+        cate: ShoppingItem.cate || "",
+        pri: ShoppingItem.pri || "",
+        est: ShoppingItem.est || "",
       });
       setItemsList(ShoppingItem.items || []);
     }
@@ -41,6 +54,7 @@ export default function ShoppingForm() {
     const { name, value } = e.target;
     let validValue = value;
 
+
     if (name === 'name') {
       // Allow only letters and spaces, remove numbers and special characters
       validValue = value.replace(/[^a-zA-Z\s]/g, '');
@@ -48,32 +62,29 @@ export default function ShoppingForm() {
       // Allow only positive numbers and decimal points
       validValue = value.replace(/[^0-9.]/g, '');
       if (parseFloat(validValue) < 0) validValue = '0';
-    }
 
+    }
     setFormData({ ...formData, [name]: validValue });
-    setErrors({ ...errors, [name]: '' });
+    setErrors({ ...errors, [name]: "" });
   };
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.name) newErrors.name = 'Product Name is required';
+    if (!formData.name) newErrors.name = "Product Name is required";
     if (!formData.qty || isNaN(formData.qty) || formData.qty <= 0)
-      newErrors.qty = 'Quantity should be a positive number';
+      newErrors.qty = "Quantity should be a positive number";
     if (!formData.est || isNaN(formData.est) || formData.est <= 0)
-      newErrors.est = 'Estimate Price should be a positive number';
-    if (!formData.qtytype) newErrors.qtytype = 'Please select a quantity type';
-    if (!formData.cate) newErrors.cate = 'Please select a category';
-    if (!formData.pri) newErrors.pri = 'Please select a priority';
-
+      newErrors.est = "Estimate Price should be a positive number";
+    if (!formData.qtytype) newErrors.qtytype = "Please select a quantity type";
+    if (!formData.cate) newErrors.cate = "Please select a category";
+    if (!formData.pri) newErrors.pri = "Please select a priority";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleAddItem = () => {
     if (!validateForm()) return;
-
     const newItem = { ...formData };
-
     setItemsList((prevItems) => {
       const index = prevItems.findIndex((item) => item.name === formData.name);
       if (index !== -1) {
@@ -84,8 +95,7 @@ export default function ShoppingForm() {
         return [...prevItems, newItem];
       }
     });
-
-    setFormData({ name: '', qty: '', qtytype: '', cate: '', pri: '', est: '' });
+    setFormData({ name: "", qty: "", qtytype: "", cate: "", pri: "", est: "" });
   };
 
   const handleDeleteItem = (index) => {
@@ -94,13 +104,14 @@ export default function ShoppingForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (itemsList.length === 0) {
-      alert('No items in the shopping list. Please add items before submitting.');
+      alert(
+        "No items in the shopping list. Please add items before submitting."
+      );
       return;
     }
 
-    const transformedItems = itemsList.map(item => ({
+    const transformedItems = itemsList.map((item) => ({
       name: item.name,
       quantity: parseInt(item.qty, 10),
       quantityType: item.qtytype,
@@ -111,174 +122,278 @@ export default function ShoppingForm() {
 
     try {
       let url, method;
-
       if (location.state?.ShoppingItem?._id && location.state?.SecondId) {
         url = `http://localhost:8070/rshopping/update/${location.state.ShoppingItem._id}/${location.state.SecondId}`;
+
         method = 'PUT';
       } else {
         url = 'http://localhost:8070/rshopping/add';
         method = 'POST';
+
       }
 
       const response = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ items: transformedItems }),
       });
 
       const responseData = await response.json();
-      console.log('Server response:', responseData);
+      console.log("Server response:", responseData);
 
       if (response.ok) {
-        alert('Shopping list added successfully');
-        navigate('/dashShoppingTable');
+        alert("Shopping list added successfully");
+        navigate("/dashShoppingTable");
       } else {
+
         alert(`Failed to add shopping list. Server response: ${responseData.message || 'Unknown error'}`);
+
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred while updating the shopping list.');
+      console.error("Error:", error);
+      alert("An error occurred while updating the shopping list.");
     }
   };
 
   const handleViewShoppingList = () => {
-    navigate('/dashShoppingTable');
+    navigate("/dashShoppingTable");
   };
 
   return (
-    <div style={styles.formContainer}>
-      <h2 style={styles.title}>{location.state?.ShoppingItem ? 'Update Shopping List' : 'Shopping List Form'}</h2>
-      <form onSubmit={handleSubmit}>
+    <Box
+      sx={{
+        minHeight: "112vh",
+        backgroundImage: `url("https://cdn.pixabay.com/photo/2024/10/19/12/21/vegetables-9132663_1280.jpg")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        p: 2,
+      }}
+    >
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(6px)",
+          backgroundColor: "rgba(0, 0, 0, 0.4)", // <-- darker background
+          zIndex: 0,
+        }}
+      />
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 1,
+          background: "rgba(255, 255, 255, 0.75)",
+          padding: "35px 40px",
+          borderRadius: "20px",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          border: "1px solid rgba(255, 255, 255, 0.3)",
+          boxShadow: "0 8px 32px rgba(31, 38, 135, 0.2)",
+          width: "100%",
+          maxWidth: "500px",
+          color: "#222",
+        }}
+      >
+        <Typography variant="h5" align="center" gutterBottom fontWeight="bold">
+          {location.state?.ShoppingItem
+            ? "Update Shopping List"
+            : "Shopping List Form"}
+        </Typography>
+
         {!location.state?.ShoppingItem && (
           <>
-            <input
-              type="text"
+            <TextField
+              fullWidth
               name="name"
+              label="Product Name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Product Name"
-              style={styles.input}
+              error={!!errors.name}
+              helperText={errors.name}
+              sx={{ mb: 2, backgroundColor: "white", borderRadius: 1 }}
             />
-            {errors.name && <div style={styles.error}>{errors.name}</div>}
-
-            <input
-              type="number"
+            <TextField
+              fullWidth
               name="qty"
+              label="Quantity"
               value={formData.qty}
               onChange={handleChange}
-              placeholder="Quantity"
-              style={styles.input}
+              error={!!errors.qty}
+              helperText={errors.qty}
+              sx={{ mb: 2, backgroundColor: "white", borderRadius: 1 }}
             />
-            {errors.qty && <div style={styles.error}>{errors.qty}</div>}
-
-            <select
-              name="qtytype"
-              value={formData.qtytype}
-              onChange={handleChange}
-              style={styles.select}
+            <FormControl
+              fullWidth
+              sx={{ mb: 2, backgroundColor: "white", borderRadius: 1 }}
             >
-              <option value="" disabled>Select Measurement Units</option>
-              {qtyTypes.map((type, index) => (
-                <option key={index} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-            {errors.qtytype && <div style={styles.error}>{errors.qtytype}</div>}
+              <InputLabel>Measurement Units</InputLabel>
+              <Select
+                name="qtytype"
+                value={formData.qtytype}
+                onChange={handleChange}
+                label="Measurement Units"
+              >
+                {qtyTypes.map((type) => (
+                  <MenuItem key={type} value={type}>
+                    {type}
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.qtytype && (
+                <Typography variant="caption" color="error">
+                  {errors.qtytype}
+                </Typography>
+              )}
+            </FormControl>
 
-            <select
-              name="cate"
-              value={formData.cate}
-              onChange={handleChange}
-              style={styles.select}
+            <FormControl
+              fullWidth
+              sx={{ mb: 2, backgroundColor: "white", borderRadius: 1 }}
             >
-              <option value="" disabled>Select Category</option>
-              {categories.map((category, index) => (
-                <option key={index} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-            {errors.cate && <div style={styles.error}>{errors.cate}</div>}
+              <InputLabel>Category</InputLabel>
+              <Select
+                name="cate"
+                value={formData.cate}
+                onChange={handleChange}
+                label="Category"
+              >
+                {categories.map((cat) => (
+                  <MenuItem key={cat} value={cat}>
+                    {cat}
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.cate && (
+                <Typography variant="caption" color="error">
+                  {errors.cate}
+                </Typography>
+              )}
+            </FormControl>
 
-            <select
-              name="pri"
-              value={formData.pri}
-              onChange={handleChange}
-              style={styles.select}
+            <FormControl
+              fullWidth
+              sx={{ mb: 2, backgroundColor: "white", borderRadius: 1 }}
             >
-              <option value="" disabled>Select Priority</option>
-              {priorities.map((priority, index) => (
-                <option key={index} value={priority}>
-                  {priority}
-                </option>
-              ))}
-            </select>
-            {errors.pri && <div style={styles.error}>{errors.pri}</div>}
+              <InputLabel>Priority</InputLabel>
+              <Select
+                name="pri"
+                value={formData.pri}
+                onChange={handleChange}
+                label="Priority"
+              >
+                {priorities.map((pri) => (
+                  <MenuItem key={pri} value={pri}>
+                    {pri}
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.pri && (
+                <Typography variant="caption" color="error">
+                  {errors.pri}
+                </Typography>
+              )}
+            </FormControl>
 
-            <input
-              type="number"
+            <TextField
+              fullWidth
               name="est"
+              label="Estimated Price"
               value={formData.est}
               onChange={handleChange}
-              placeholder="Estimate Price"
-              style={styles.input}
+              error={!!errors.est}
+              helperText={errors.est}
+              sx={{ mb: 2, backgroundColor: "white", borderRadius: 1 }}
             />
-            {errors.est && <div style={styles.error}>{errors.est}</div>}
 
-            <button
-              type="button"
+            <Button
+              fullWidth
+              variant="contained"
+              color="success"
               onClick={handleAddItem}
-              style={styles.addButton}
+              sx={{ mb: 3 }}
             >
               Add to List
-            </button>
+            </Button>
           </>
         )}
 
-        <ul style={styles.list}>
+        <List>
           {itemsList.map((item, index) => (
-            <li key={index} style={styles.listItem}>
-              {item.qty} {item.qtytype} - {item.name} ({item.cate}, {item.pri}) - Rs.{item.est}
-              <button
-                onClick={() => handleDeleteItem(index)}
-                style={styles.deleteButton}
-              >
-                X
-              </button>
-            </li>
+            <ListItem
+              key={index}
+              sx={{
+                backgroundColor: "rgba(255,255,255,0.1)",
+                borderRadius: 1,
+                mb: 1,
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography>
+                {item.qty} {item.qtytype} - {item.name} ({item.cate}, {item.pri}
+                ) - Rs.{item.est}
+              </Typography>
+              <IconButton onClick={() => handleDeleteItem(index)} color="error">
+                <DeleteIcon />
+              </IconButton>
+            </ListItem>
           ))}
-        </ul>
+        </List>
 
-        {location.state?.ShoppingItem ? (
-          <button
-            type="submit"
-            style={styles.submitButton}
-            disabled={itemsList.length === 0}
-          >
-            Update Items
-          </button>
-        ) : (
-          <button
-            type="submit"
-            style={styles.submitButton}
-            disabled={itemsList.length === 0}
-          >
-            Submit All Items
-          </button>
-        )}
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          fullWidth
+          variant="contained"
+          color="primary"
+          disabled={itemsList.length === 0}
+          sx={{ mt: 2 }}
+          style={{
+            backgroundColor: "#e91e63",
+            color: "white",
+            padding: "12px 20px",
+            border: "none",
+            borderRadius: "5px",
+            width: "100%",
+            fontSize: "16px",
+            cursor: "pointer",
+            marginBottom: "15px",
+          }}
+        >
+          {location.state?.ShoppingItem ? "Update Items" : "Submit All Items"}
+        </Button>
 
-        <button
+        <Button
           type="button"
           onClick={handleViewShoppingList}
-          style={styles.viewButton}
+          fullWidth
+          variant="outlined"
+          color="secondary"
+          sx={{ mt: 2 }}
+          style={{
+            backgroundColor: "#333",
+            color: "white",
+            padding: "10px 20px",
+            border: "none",
+            borderRadius: "5px",
+            width: "100%",
+            cursor: "pointer",
+          }}
         >
           View Shopping List
-        </button>
-      </form>
-    </div>
+        </Button>
+      </Box>
+    </Box>
   );
 }
+
 
 const styles = {
   formContainer: {
@@ -393,3 +508,4 @@ styles.addButton[':hover'] = { backgroundColor: '#45a049' };
 styles.submitButton[':hover'] = { backgroundColor: '#0056b3' };
 styles.viewButton[':hover'] = { backgroundColor: '#e68900' };
 styles.deleteButton[':hover'] = { backgroundColor: '#d32f2f' };
+
