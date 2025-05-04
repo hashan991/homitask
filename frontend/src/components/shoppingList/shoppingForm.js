@@ -41,7 +41,11 @@ export default function ShoppingForm() {
     const { name, value } = e.target;
     let validValue = value;
 
-    if (name === 'qty' || name === 'est') {
+    if (name === 'name') {
+      // Allow only letters and spaces, remove numbers and special characters
+      validValue = value.replace(/[^a-zA-Z\s]/g, '');
+    } else if (name === 'qty' || name === 'est') {
+      // Allow only positive numbers and decimal points
       validValue = value.replace(/[^0-9.]/g, '');
       if (parseFloat(validValue) < 0) validValue = '0';
     }
@@ -111,11 +115,11 @@ export default function ShoppingForm() {
       if (location.state?.ShoppingItem?._id && location.state?.SecondId) {
         url = `http://localhost:8070/rshopping/update/${location.state.ShoppingItem._id}/${location.state.SecondId}`;
         method = 'PUT';
-     } else {
+      } else {
         url = 'http://localhost:8070/rshopping/add';
         method = 'POST';
-     }
-     
+      }
+
       const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
@@ -129,7 +133,7 @@ export default function ShoppingForm() {
         alert('Shopping list added successfully');
         navigate('/dashShoppingTable');
       } else {
-        alert(`Failed toadd shopping list. Server response: ${responseData.message || 'Unknown error'}`);
+        alert(`Failed to add shopping list. Server response: ${responseData.message || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -341,7 +345,7 @@ const styles = {
   viewButton: {
     width: '100%',
     padding: '12px',
-    margin: '10px 0',
+    margin:  '10px 0',
     backgroundColor: '#FF9800',
     color: 'white',
     border: 'none',

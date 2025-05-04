@@ -51,12 +51,12 @@ const SideB = () => {
                         border: "2px solid #475569",
                         borderRadius: "10px",
                         margin: "10px 0",
-                        backgroundColor: isActive(["/dashreports"])
+                        backgroundColor: isActive(["/dashshoppingreports"])
                         ? " rgb(0, 0, 0)"
                         : "inherit",
                         "&:hover": { backgroundColor: "#475569" }, 
                     }} 
-                    onClick={() => handleNavigation('/dashreports')}
+                    onClick={() => handleNavigation('/dashshoppingreports')}
                 >
                    <ListAltIcon sx={{ color: "#FFFFFF" }} />
               <ListItemText
