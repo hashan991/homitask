@@ -34,7 +34,15 @@ import FastfoodIcon from "@mui/icons-material/Fastfood";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
 
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#7E57C2",
+  "#EF5350",
+];
+
 
 function ReportPage() {
   const [report, setReport] = useState(null);
@@ -165,41 +173,65 @@ function ReportPage() {
         </Box>
       </Box>
 
-      {/* Budget Summary */}
-      <Grid container spacing={3} sx={{ mb: 5 }}>
+      <Grid container spacing={4} sx={{ mb: 5 }}>
+        {/* Budget Overview Card */}
         <Grid item xs={12} md={6}>
-          <Card sx={{ p: 2, boxShadow: 3 }}>
+          <Card
+            sx={{
+              p: 3,
+              borderRadius: 4,
+              background: "linear-gradient(135deg, #e3f2fd 0%, #fce4ec 100%)",
+              boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
+            }}
+          >
             <CardContent>
-              <Typography variant="h5" gutterBottom>
+              <Typography variant="h5" fontWeight="bold" gutterBottom>
                 💰 Budget Overview
               </Typography>
 
-              <Typography variant="body1" sx={{ mt: 1 }}>
+              <Typography variant="body1" sx={{ mt: 2 }}>
                 <b>Budget Amount:</b>{" "}
-                <CountUp end={budgetAmount} duration={1} /> LKR
+                <CountUp end={budgetAmount} duration={1.5} /> LKR
               </Typography>
 
               <Typography variant="body1">
-                <b>Total Cost:</b> <CountUp end={totalCost} duration={1} /> LKR
+                <b>Total Cost:</b> <CountUp end={totalCost} duration={1.5} />{" "}
+                LKR
               </Typography>
 
               <Typography
                 variant="body1"
-                color={remainingBudget >= 0 ? "green" : "error"}
+                color={remainingBudget >= 0 ? "success.main" : "error.main"}
               >
                 <b>Remaining Budget:</b>{" "}
-                <CountUp end={remainingBudget} duration={1} /> LKR
+                <CountUp end={remainingBudget} duration={1.5} /> LKR
               </Typography>
 
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="caption">Budget Usage</Typography>
+              {/* Budget Progress */}
+              <Box sx={{ mt: 3 }}>
+                <Typography variant="caption" color="text.secondary">
+                  Budget Usage
+                </Typography>
                 <LinearProgress
                   variant="determinate"
                   value={budgetUsedPercent > 100 ? 100 : budgetUsedPercent}
-                  sx={{ height: 10, borderRadius: 5 }}
+                  sx={{
+                    height: 12,
+                    borderRadius: 6,
+                    mt: 1,
+                    backgroundColor: "#e0e0e0",
+                    "& .MuiLinearProgress-bar": {
+                      borderRadius: 6,
+                      transition: "width 1s ease-in-out",
+                    },
+                  }}
                   color={budgetUsedPercent <= 100 ? "primary" : "error"}
                 />
-                <Typography variant="body2" align="right">
+                <Typography
+                  variant="body2"
+                  align="right"
+                  sx={{ mt: 1, fontWeight: 500 }}
+                >
                   {budgetUsedPercent}% used
                 </Typography>
               </Box>
@@ -207,13 +239,21 @@ function ReportPage() {
           </Card>
         </Grid>
 
-        {/* Pie Chart */}
+        {/* Meal Category Pie Chart */}
         <Grid item xs={12} md={6}>
-          <Card sx={{ p: 2, boxShadow: 3 }}>
+          <Card
+            sx={{
+              p: 3,
+              borderRadius: 4,
+              background: "linear-gradient(135deg, #fff3e0 0%, #e8f5e9 100%)",
+              boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+            }}
+          >
             <CardContent>
-              <Typography variant="h5" gutterBottom>
+              <Typography variant="h5" fontWeight="bold" gutterBottom>
                 📊 Meal Category Distribution
               </Typography>
+
               <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
                   <Pie
@@ -222,7 +262,11 @@ function ReportPage() {
                     cy="50%"
                     labelLine={false}
                     outerRadius={80}
+                    fill="#8884d8"
                     dataKey="value"
+                    label={({ name, percent }) =>
+                      `${name}: ${(percent * 100).toFixed(0)}%`
+                    }
                   >
                     {mealCategoryData.map((entry, index) => (
                       <Cell
@@ -232,7 +276,7 @@ function ReportPage() {
                     ))}
                   </Pie>
                   <Tooltip />
-                  <Legend />
+                  <Legend verticalAlign="bottom" height={36} />
                 </PieChart>
               </ResponsiveContainer>
             </CardContent>
