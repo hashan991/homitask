@@ -47,14 +47,17 @@ export default function InventoryForm() {
       [name]: value,
     });
 
-    setErrors({
+    setErrors({ 
       ...errors,
       [name]: "",
     });
   };
 
+  
   const validateForm = () => {
     const newErrors = {};
+    const today = new Date().toISOString().split("T")[0];
+  
     if (!formData.name) newErrors.name = "Item Name is required";
     if (!formData.quantity || isNaN(formData.quantity) || formData.quantity <= 0)
       newErrors.quantity = "Quantity must be a positive number";
@@ -62,11 +65,17 @@ export default function InventoryForm() {
     if (!formData.threshold || isNaN(formData.threshold) || formData.threshold < 0)
       newErrors.threshold = "Threshold must be a non-negative number";
     if (!formData.quantityType) newErrors.quantityType = "Please select a Quantity Type";
-    if (!formData.expiryDate) newErrors.expiryDate = "Expire Date is required"; // Validate expire date
-
+  
+    if (!formData.expiryDate) {
+      newErrors.expiryDate = "Expire Date is required";
+    } else if (formData.expiryDate < today) {
+      newErrors.expiryDate = "Expire Date must be today or in the future";
+    }
+  
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -248,20 +257,22 @@ export default function InventoryForm() {
           <div style={{ marginBottom: "15px" }}>
             <label htmlFor="expiryDate" style={{ color: "#333" }}>Expire Date:</label>
             <input
-              type="date"
-              id="expiryDate"
-              name="expiryDate"
-              value={formData.expiryDate}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "10px",
-                marginTop: "5px",
-                borderRadius: "5px",
-                border: "1px solid #ddd"
-              }}
-            />
+            type="date"
+            id="expiryDate"
+            name="expiryDate"
+            value={formData.expiryDate}
+            onChange={handleChange}
+            required
+            min={new Date().toISOString().split("T")[0]} // 👈 sets today's date as minimum
+            style={{
+              width: "100%",
+              padding: "10px",
+              marginTop: "5px",
+              borderRadius: "5px",
+              border: "1px solid #ddd"
+            }}
+          />
+
             {errors.expiryDate && <div style={{ color: "red", fontSize: "12px" }}>{errors.expiryDate}</div>}
           </div>
 

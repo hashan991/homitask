@@ -235,6 +235,7 @@ export default function RemoveInventoryForm() {
               value={formData.expiryDate}
               onChange={handleChange}
               required
+              min={new Date().toISOString().split("T")[0]} // 👈 sets today's date as minimum
               style={{
                 width: "100%",
                 padding: "10px",
@@ -242,7 +243,8 @@ export default function RemoveInventoryForm() {
                 borderRadius: "5px",
                 border: "1px solid #ddd"
               }}
-            />
+/>
+
             {errors.expiryDate && <div style={{ color: "red", fontSize: "12px" }}>{errors.expiryDate}</div>}
           </div>
 
